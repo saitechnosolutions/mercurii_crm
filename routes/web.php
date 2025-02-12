@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FieldController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +19,65 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('guest')->name('login');
+
+Route::POST('/login',[LoginController::class,'login']);
+// Route::GET('logout',[LoginController::class,'logout']);
+// Route::middleware(['auth'])->group(function(){
+//     Route::get('/dashboard', function () {
+//         return view('pages.dashboard');
+//     });
+// });
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/get-leads', [DashboardController::class, 'getLeads'])->name('getLeads');
+
+
+Route::get('/logout',[LoginController::class,'logout']);
+
+
+// fieldroute
+Route::get('/setup/fields',[FieldController::class,'FieldIndex']);
+Route::POST('/savedetails',[FieldController::class,'savedetails']);
+Route::get('/setup/viewform',[FieldController::class,'viewForm']);
+Route::POST('/updatestatus',[FieldController::class,'updatestatus']);
+Route::get('/editform/{id}',[FieldController::class,'editForm']);
+Route::POST('/updateformdetails',[FieldController::class,'updateformdetails']);
+Route::GET('/deletecolumn/{id}/{categoryid}/{subcatid}/{formtext}',[FieldController::class,'deletecolumn']);
+
+// userrout
+Route::view('/users','pages.user');
+Route::post('/adduser', [UserController::class, 'store'])->name('users.store');
+Route::post('/updateuser', [UserController::class, 'update'])->name('users.update');
+
+// productrout
+Route::get('/products', [ProductController::class, 'products'])->name('products');
+Route::view('/addproduct','pages.productadd');
+Route::post('/addproduct', [ProductController::class, 'store'])->name('products.store');
+Route::post('/updateproduct', [ProductController::class, 'update'])->name('products.update');
+
+// leadroute
+Route::get('/viewleads', [Controller::class, 'index'])->name('pages.leads');
+Route::view('/addleads','pages.leadaddform');
+Route::post('/getfandfreports', [Controller::class,'getfandfreports']);
+Route::post('/saveleads',[Controller::class,'saveleads']);
+
+// sinlelead
+Route::get('/singlelead/{leadid}', [Controller::class, 'singleLead'])->name('single.lead');
+Route::POST('/saveleadsproduct',[Controller::class,'saveleadsproduct']);
+Route::get('/lead-edit/{id}',[Controller::class, 'leadedit'])->name('lead.edit');
+Route::POST('/updatelead',[Controller::class,'updatelead']);
+Route::post('/statusupdate', [Controller::class, 'updateStatus'])->name('status.update');
+
+// quoto
+Route::get('/singlequota/{leadid}', [Controller::class, 'singlequota'])->name('single.quota');
+Route::get('/createquota/{leadid}',[Controller::class, 'createquota'])->name('create.quota');
+
+// activities
+Route::view('/activities', 'pages.createactivities')->name('activities');
+
+// quotatu
+Route::get('/viewconverted', [Controller::class, 'viewconvert'])->name('pages.viewconverted');

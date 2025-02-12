@@ -1,0 +1,196 @@
+{{-- <header id="page-topbar">
+    <div class="navbar-header">
+        <div class="d-flex">
+
+            <div class="navbar p-5">
+                <a href="/dashboard" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="/assets/images/new/.png" alt="" height="54">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="/assets/images/new/.png" alt="" height="54">
+                         <span
+                            class="logo-txt">Mercury Storage Solutions</span>
+                    </span>
+                </a>
+
+                <a href="/dashboard" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="/assets/images/new/.png" alt="" height="24">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="/assets/images/new/.png" alt="" height="24">
+                        <span
+                            class="logo-txt">Mercury Storage Solutions</span>
+                    </span>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-center">
+
+            <div class="dropdown d-inline-block d-lg-none ms-2">
+                <button type="button" class="btn header-item" id="page-header-search-dropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i data-feather="search" class="icon-lg"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                    aria-labelledby="page-header-search-dropdown">
+
+                    <form class="p-3">
+                        <div class="form-group m-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control"
+                                    placeholder="{% trans %}Search{% endtrans %}..." aria-label="Search Result">
+
+                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="dropdown d-none d-sm-inline-block">
+                <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    Masters
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+
+                    <div class="p-2">
+                        <div class="row g-0">
+                            <div class="col">
+                                <a class="dropdown-icon-item" href="{{ url('/setup/fields') }}">
+                                    <span>Field Customization</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div>
+
+        </div>
+        <div>
+
+        </div>
+    </div>
+</header> --}}
+
+
+<div class="topnav">
+    <div class="container-fluid">
+        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+            <div class="navbar-brand-box">
+                <a href="#" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="/assets/images/logom.png" alt="" height="54">
+                        {{-- <span
+                        class="logo-txt">Mercury Storage Solutions</span>
+                </span> --}}
+                    </span>
+                    <span class="logo-lg">
+                        <img src="/assets/images/logom.png" alt="" height="54">
+
+                    {{-- <span
+                            class="logo-txt">Mercury Storage Solutions</span>
+                    </span> --}}
+                </span>
+                </a>
+
+                <a href="#" class="logo logo-light">
+                    <span class="logo-sm">
+                        {{-- <span
+                        class="logo-txt">Mercury Storage Solutions</span>
+                </span> --}}
+                        <img src="/assets/images/logom.png" alt="" height="54">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="/assets/images/logom.png" alt="" height="54">
+
+                    {{-- <span
+                            class="logo-txt">Mercury Storage Solutions</span>
+                    </span> --}}
+                </span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/dashboard" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages"
+                            role="button">
+                            <i data-feather="grid"></i><span data-key="t-apps">Master</span>
+                            <div class="arrow-down"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-pages">
+
+                            {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
+                                Customization</a> --}}
+
+                            <a href="{{ url('/users') }}" class="dropdown-item"
+                                data-key="t-calendar">Users</a>
+                                <a href="{{ url('/products') }}" class="dropdown-item"
+                                data-key="t-calendar">Products</a>
+
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/activities" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Activities</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/viewleads" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Leads</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/viewconverted" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
+                        </a>
+                    </li>
+
+
+
+                        {{-- <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/enq-leadentry" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">Enq/Lead Entry</span>
+                            </a>
+                        </li> --}}
+
+                </ul>
+            </div>
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item bg-light-subtle border-start border-end" style=" background-color:#ffffff !important;
+    border:none !important;"
+                    id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded-circle header-profile-user" src="/assets/images/people.png" alt="Header Avatar">
+                    <span class="d-none d-xl-inline-block ms-1 fw-medium">{{ Auth::user()->name }}</span>
+                    <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <!-- item-->
+
+                    <a class="dropdown-item" href="/logout"><i
+                            class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
