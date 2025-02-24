@@ -83,5 +83,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Add product</button>
 </form>
+    </div>
+</section>
 
 @endsection

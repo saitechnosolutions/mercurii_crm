@@ -27,6 +27,13 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'User added successfully');
     }
 
+    public function storerole(Request $request)
+    {
+        $role = Role::create(['name' => $request->name]);
+        
+        return redirect()->back()->with('success', 'User added successfully');
+
+    }
 
 
 

@@ -12,6 +12,23 @@ class Lead extends Model
     protected $table = 'leads'; // Change if needed
 
     protected $guarded = [];
+
+
+    public function assignedTo()
+{
+    return $this->belongsTo(User::class, 'assigned_to');
+}
+
+public function leadstatus()
+{
+    return $this->belongsTo(Dropdowndata::class, 'Leadstatus');
+}
+public function assignedUser()
+{
+    return $this->belongsTo(User::class, 'assigned_to');
+}
+
+
 }
 
 

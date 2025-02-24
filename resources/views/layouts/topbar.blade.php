@@ -127,6 +127,7 @@
                             <i data-feather="home"></i><span data-key="t-dashboards">Dashboard</span>
                         </a>
                     </li>
+                    @if (Auth::user()->role == 'Super Admin')
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages"
                             role="button">
@@ -142,28 +143,39 @@
                                 data-key="t-calendar">Users</a>
                                 <a href="{{ url('/products') }}" class="dropdown-item"
                                 data-key="t-calendar">Products</a>
+                                <a href="{{ url('/customer') }}" class="dropdown-item"
+                                data-key="t-calendar">Customer</a>
 
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="/activities" id="topnav-dashboard"
                             role="button">
                             <i data-feather="home"></i><span data-key="t-dashboards">Activities</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="/viewleads" id="topnav-dashboard"
                             role="button">
                             <i data-feather="home"></i><span data-key="t-dashboards">Leads</span>
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="/viewconverted" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Design</span>
+                        </a>
+                    </li>
+                    @if (Auth::user()->role == 'Super Admin')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/viewquota" id="topnav-dashboard"
                             role="button">
                             <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
                         </a>
                     </li>
-
+                   @endif
 
 
                         {{-- <li class="nav-item dropdown">

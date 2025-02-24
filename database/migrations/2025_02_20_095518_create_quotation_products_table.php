@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('leads', function (Blueprint $table) {
-            $table->string('lead_id')->unique()->after('id'); // Ensure uniqueness if required
+        Schema::create('quotation_products', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('leads', function (Blueprint $table) {
-            $table->dropColumn('lead_id');
-        });
+        Schema::dropIfExists('quotation_products');
     }
 };

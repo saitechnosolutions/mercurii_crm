@@ -14,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ConvertedDataTable extends DataTable
+class QuotationDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -124,13 +124,9 @@ class ConvertedDataTable extends DataTable
         ->leftJoin('dropdowndatas as status', 'status.id', '=', 'leads.Leadstatus')
         ->leftJoin('city_list', 'city_list.id', '=', 'leads.citylist')
         ->leftJoin('users', 'users.id', '=', 'leads.assigned_to')
-        ->whereIn('leads.category', [354, 355, 358])
+        // ->whereIn('leads.category', [353, 356, 357])
         ->where('leads.Leadstatus', '=' , 343 )
-        ->where(function($query) {
-    $query->where('leads.quota_proceed', '!=', 1)
-    ->orWhereNull('leads.quota_proceed');
-})
-
+        ->where('leads.quota_proceed', '=' , 1 )
         ->orderBy('leads.updated_at', 'desc');
     }
 

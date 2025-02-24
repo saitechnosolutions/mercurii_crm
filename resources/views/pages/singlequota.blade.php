@@ -21,10 +21,11 @@
                         <button class="btn btn-success  btn-sm me-2 schedulebtns" data-bs-toggle="modal"
                             data-bs-target="#ScheduleCall" title="Schedule Call"><i class="fa fa-phone"
                                 aria-hidden="true"></i>&nbsp;&nbsp;Schedule Call</button> --}}
-
-                    <button class="btn btn-warning  btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addleadproduct"
+                                @if (Auth::user()->role == 'Super Admin')
+                    {{-- <button class="btn btn-warning  btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addleadproduct"
                         title="Add Payment"><i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;Add
-                        Product</button>
+                        Product</button> --}}
+                        @endif
 
 
                 </div>
@@ -43,11 +44,13 @@
                         <div class="col-lg-6">
                             <h6>Enquiry Info</h6>
                         </div>
-                        <div class="col-lg-6 d-flex justify-content-end">
+                        @if (Auth::user()->role == 'Super Admin')
+                        {{-- <div class="col-lg-6 d-flex justify-content-end">
 
                             <a href="/lead-edit/{{ $lead->id }}" class="btn btn-danger btn-sm"><i
                                     class="mdi mdi-lead-pencil" aria-hidden="true"></i></a>
-                        </div>
+                        </div> --}}
+                        @endif
                     </div>
                     <tr>
                         <th>Customer Name</th>
@@ -60,6 +63,13 @@
                         <th>Source of Enquiry</th>
                                 <td>{{ $dropdownValue ?? '-' }}</td>
                     </tr>
+                    @php
+                    $dropdownValue = App\Models\Dropdowndata::where('id', $lead->Leadstatus)->value('dropdowndata');
+                @endphp
+<tr>
+<th>Enquiry Status</th>
+        <td>{{ $dropdownValue ?? '-' }}</td>
+</tr>
                     <tr>
                         <th>Enquiry Date</th>
                                 <td>{{ $lead->Entrydate }}</td>
@@ -162,19 +172,25 @@
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Reminders</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Meeting Update</button>
                 </li> --}}
+                @if($lead->quota_proceed != 1)
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-payhis-tab" data-bs-toggle="pill" data-bs-target="#pills-payhis" type="button" role="tab" aria-controls="pills-payhis" aria-selected="false">Create Quotation</button>
+                  <button class="nav-link active" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Design</button>
+                </li>
+                @endif
+                @if($lead->quota_proceed == 1)
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link " id="pills-payhis-tab" data-bs-toggle="pill" data-bs-target="#pills-payhis" type="button" role="tab" aria-controls="pills-payhis" aria-selected="false">Create Quotation</button>
                   </li>
+                  @endif
+                  @if (Auth::user()->role == 'Super Admin' && (isset($lead) && $lead->quota_proceed != 1))
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-quota-tab" data-bs-toggle="pill" data-bs-target="#pills-quota" type="button" role="tab" aria-controls="pills-quota" aria-selected="false">Enquiry Status</button>
+                    <button class="nav-link " id="pills-quota-tab" data-bs-toggle="pill" data-bs-target="#pills-quota" type="button" role="tab" aria-controls="pills-quota" aria-selected="false">Move To Quotation</button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  @endif
+                  {{-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-Products-tab" data-bs-toggle="pill" data-bs-target="#pills-Products" type="button" role="tab" aria-controls="pills-Products" aria-selected="false">Enquiry Products</button>
-                  </li>
+                  </li> --}}
               </ul>
               <div class="tab-content" id="pills-tabContent">
                 {{-- <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -331,10 +347,105 @@
                             </div>
 
                 </div> --}}
-                {{-- <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                @if($lead->quota_proceed != 1)
+                <div class="tab-pane fade show active" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 
-                </div> --}}
-                <div class="tab-pane fade" id="pills-payhis" role="tabpanel" aria-labelledby="pills-payhis-tab">
+                    <form action="{{ route('leaddesigns.storedesign') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="bg-white container-fluid" style="padding:10px;box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+                            <div class="row">
+
+                                <div class="col-lg-6" >
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"
+                                            class="form-label">Category Name </label>
+                                            <input type="hidden" name="catename" class="form-control" value="{{ $lead->category }}" placeholder=""   >
+                                            <input type="hidden" name="leadiid" class="form-control" value="{{ $lead->id }}" placeholder=""   >
+                                            @if ($drop = App\Models\Dropdowndata::where('id', $lead->category)->first())
+                                            <input type="text" name="" class="form-control" value="{{ $drop->dropdowndata }}" placeholder=""  disabled >
+                                            @endif
+
+                                            <input type="hidden" name="assigneeto" class="form-control" value="{{ $lead->assigned_to }}" placeholder=""   >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" >
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"
+                                            class="form-label">Product Name </label>
+                                            <input type="hidden" name="proname" class="form-control" value="{{ $lead->products }}" placeholder=""   >
+                                            @if ($prod = App\Models\Product::where('id', $lead->products)->first())
+                                            <input type="text" name="" class="form-control" value="{{ $prod->productname }}" placeholder=""  disabled >
+                                        @endif
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mt-2 justify-content-center">
+                                    <div class="form-group">
+                                        <textarea name="design" id="summernote" class="summernote"></textarea>
+                                        {{-- <div ></div> --}}
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Document / File</label>
+                                        <input type="file" class="form-control" name="document" id="document">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mt-2">
+                                </div>
+                                <div class="col-lg-2 mt-2 justify-content-center">
+                                    <div class="form-group">
+                                        <input type="hidden"
+                                            value="">
+                                        <button type="submit" class="mt-2 btn btn-success btn-sm w-100"
+                                            style="color:#fff;">Add</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    @if ($designs = App\Models\LeadDesign::where('leadiid','=', $lead->id )->orderBy('id', 'desc')->get())
+                        @foreach ($designs as $de)
+                    <div class="notes-form-details">
+                        <div class="notes-form-box " style="border-left: 8px solid {{ $de->reverse == 1 ? '#ff6501' : '#1b5683' }};">
+                            <div class="button-box">
+
+                                    <a class="btn btn-success p-2" target="_blank" href="{{ asset($de->document) }}"
+                                        download ><i class="fa fa-download"
+                                            aria-hidden="true"></i></a>
+                                            @if(auth()->id() == $de->assignee)
+                                <button class="btn text-primary notesedit p-2"
+                                    data-id="" data-bs-toggle="modal" data-bs-target="#leadeditModal"><i class="mdi mdi-lead-pencil"
+                                        aria-hidden="true"></i></button>
+                                <button class="btn text-danger notesdelete p-2"
+                                    data-id=""><i class="fa fa-trash"
+                                        aria-hidden="true"></i></button>
+                                        @endif
+                            </div>
+                            <p>{!! $de->design !!}</p>
+
+                                {{-- <span style="background-color:#fbbd54">leadid</span>
+
+
+                            <span style="background-color:#2ab57d">Date</span>
+
+                                <span style="background-color:#fd625e">username</span>
+
+
+                                <span style="background-color:#00CFF4">duration</span> --}}
+
+                        </div>
+                    </div>
+                    @endforeach
+                    @endif
+
+                </div>
+                @endif
+                @if($lead->quota_proceed == 1)
+                <div class="tab-pane fade " id="pills-payhis" role="tabpanel" aria-labelledby="pills-payhis-tab">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-3 mt-3">
@@ -346,42 +457,113 @@
                                     </div>
                                 </a>
                             </div>
-                            {{-- @if($estimates = App\Models\Estimate::where('leadid',session('leadDetails')->id)->orderBy('id','DESC')->get())
-                                @foreach ($estimates as $e) --}}
-                                <div class="col-lg-3 mt-3">
+                            @php
+                            $estimates = App\Models\QuotationProduct::where('leadno', $lead->id)
+                                        ->orderBy('id', 'DESC')
+                                        ->get();
 
+                            $i = count($estimates); // Start numbering from the oldest (reverse order)
+                        @endphp
+
+                        @if($estimates->isNotEmpty())
+                            @foreach ($estimates as $e)
+                                <div class="col-lg-3 mt-3">
                                     <div class="bg-white estimatecreate">
                                         <div class="es text-center">
-                                        <i class="mdi mdi-file-document" style="color:#fe6600;font-size:45px" aria-hidden="true"></i>
-                                        <p class="mt-3 text-dark mb-0"></p>
-                                        <p class="text-dark">₹10000</p>
+                                            <i class="mdi mdi-file-document" style="color:#fe6600;font-size:45px" aria-hidden="true"></i>
+                                            <p class=" text-dark mb-0">{{ $e->quotationno }}({{ $i-- }})</p>
+                                            <p class="text-dark">₹ {{ $e->grandtotal }}</p>
                                         </div>
-                                        {{-- @if ($sendmail = App\Models\estimatemail::where('est_id',$e->est_id)->first())
-                                            <span style="margin-top:15px;margin-left:65px" class="badge bg-success">Mail Sent</span>
-                                            @else
-                                        @endif --}}
-                                        <ul class="estimatelist">
-                                            <li style="margin:0px 5px"><a target="_blank" style="color:#000;" href="/view-estimate/"><i class="fa fa-eye" aria-hidden="true"></i></a></li>
-                                            <li style="margin:0px 11px"><a style="color:#000;" href="/editestimate/"><i  class="mdi mdi-lead-pencil" aria-hidden="true"></i></a></li>
-                                            <li style="margin:0px 11px"><i  class="fa fa-trash deleteestimate"  aria-hidden="true"></i></li>
-                                            {{-- <li style="margin:0px 11px"><i  class="fa fa-share shareestimate" data-estid={{ $e->est_id }} aria-hidden="true"></i></li> --}}
-                                            <li style="margin:0px 11px"><a href="https://api.whatsapp.com/send?phone="><i class="mdi mdi-whatsapp text-dark" aria-hidden="true"></i></a></li>
 
-                                            {{-- <li style="margin:0px 11px"><i  class="fa fa-share shareestimate" data-estid={{ $e->est_id }} aria-hidden="true"></i></li> --}}
-                                            <li style="margin:0px 11px"><a style="color:#000;" download href="/estimates/"><i class="fa fa-download" aria-hidden="true"></i></a></li>
+                                        <ul class="estimatelist">
+                                            <li style="margin:0px 5px">
+                                                {{-- {{ route('quotation.pdf', $e->id) }} --}}
+                                                <a style="color:#000;" href="/quotation/view/{{ $e->id }}">
+                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            {{-- <li style="margin:0px 11px">
+                                                <a style="color:#000;" href="/editestimate/{{ $e->id }}">
+                                                    <i class="mdi mdi-lead-pencil" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+                                            <li style="margin:0px 11px">
+                                                <i class="fa fa-trash deleteestimate" aria-hidden="true"></i>
+                                            </li>
+                                            <li style="margin:0px 11px">
+                                                <a href="https://api.whatsapp.com/send?phone=">
+                                                    <i class="mdi mdi-whatsapp text-dark" aria-hidden="true"></i>
+                                                </a>
+                                            </li> --}}
+                                            {{-- <li style="margin:0px 11px">
+                                                <a style="color:#000;" download href="/estimates/{{ $e->id }}">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                </a>
+                                            </li> --}}
+                                            <li style="margin:0px 11px">
+                                                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i> <!-- Three-dot icon -->
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <a class="dropdown-item" href="/estimates/{{ $e->id }}" download>
+                                                            <i class="fa fa-download" aria-hidden="true"></i> Download
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="/orf/{{ $e->id }}">
+                                                            <i class="fa fa-arrow-right" aria-hidden="true"></i> Move to ORF
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </div>
-
-
                                 </div>
-                                {{-- @endforeach
-                            @endif --}}
+                            @endforeach
+                        @endif
+
 
                             {{-- <div class="col-lg-4 ">3</div> --}}
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade show active" id="pills-quota" role="tabpanel" aria-labelledby="pills-quota-tab">
+                @endif
+                <div class="tab-pane fade " id="pills-quota" role="tabpanel" aria-labelledby="pills-quota-tab">
+
+                    <form action="{{ route('document.upload') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="bg-white container-fluid" style="padding:10px;box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+                            <div class="row">
+                                <div class="col-lg-6 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Document / File</label>
+                                        <input type="file" class="form-control" name="quota_doc" id="">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Proceed</label>
+                                        <select id="" name="quota_proceed" class="form-control" required>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 mt-2 justify-content-center">
+                                    <div class="form-group">
+                                        <input type="hidden" name="idle" value="{{ $lead->id }}">
+                                        <button type="submit" class="mt-2 btn btn-success btn-sm w-100"
+                                            style="color:#fff;">Add</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                {{-- <div class="tab-pane fade show active" id="pills-quota" role="tabpanel" aria-labelledby="pills-quota-tab">
                     <div class="container bg-white pt-3 " style="box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
                         <div class="row">
                             <div class="col-lg-12">
@@ -434,7 +616,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="tab-pane fade" id="pills-Products" role="tabpanel" aria-labelledby="pills-Products-tab">
                     <div class="container bg-white pt-3 " style="box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
                         <div class="row">

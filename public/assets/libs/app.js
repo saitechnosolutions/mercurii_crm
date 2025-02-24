@@ -7309,3 +7309,146 @@ $(document).ready(function () {
         });
     });
 
+
+    $(document).ready(function () {
+        $('#catepro').on('change', function () {
+            var category = $(this).val();  // Use 'state_id' instead of 'company_id'
+
+            // Retrieve CSRF token from the meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            if (category) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getfandfrep',
+                    data: {
+                        category: category  // Make sure to send 'state_id'
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function (data) {
+                        $('[name="products"]').html(data.products);
+                    }
+                });
+            } else {
+                $('[name="products"]').html('<option value="">-- Choose Products --</option>');
+            }
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('#state_listt').on('change', function () {
+            var state = $(this).val();  // Use 'state_id' instead of 'company_id'
+
+            // Retrieve CSRF token from the meta tag
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            if (state) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getfandfrepor',
+                    data: {
+                        state: state  // Make sure to send 'state_id'
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function (data) {
+                        $('[name="city"]').html(data.city);
+                    }
+                });
+            } else {
+                $('[name="city"]').html('<option value="">-- Choose City --</option>');
+            }
+        });
+    });
+
+    // var updateStatusUrl = "{{ route('lead.updateStatusdf') }}";
+
+    // $(document).ready(function() {
+    //     // Open modal and set lead ID
+    //     $(document).on('click', '.change-status-btn', function() {
+    //         var leadId = $(this).data('id');
+    //         $('#lead_id').val(leadId);
+    //         $('#statusModal').modal('show');
+    //     });
+
+    //     // Submit the status change form
+    //     $('#changeStatusForm').on('submit', function(e) {
+    //         e.preventDefault();
+
+    //         $.ajax({
+    //             url: updateStatusUrl,
+    //             method: "POST",
+    //             data: $(this).serialize(),
+    //             success: function(response) {
+    //                 if (response.success) {
+    //                     alert(response.message);
+    //                     $('#statusModal').modal('hide');
+    //                     $('#leads').DataTable().ajax.reload(); // Reload DataTable
+    //                 } else {
+    //                     alert(response.message);
+    //                 }
+    //             },
+    //             error: function(xhr) {
+    //                 console.log(xhr.responseText);
+    //             }
+    //         });
+    //     });
+    // });
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let statusDropdown = document.getElementById("status");
+        let convertedOptionsDiv = document.getElementById("convertedOptionsDiv");
+
+        statusDropdown.addEventListener("change", function () {
+            let selectedOption = statusDropdown.options[statusDropdown.selectedIndex];
+            let selectedText = selectedOption.getAttribute("data-status");
+
+            if (selectedText === "CONVERTED") {
+                convertedOptionsDiv.style.display = "block";
+            } else {
+                convertedOptionsDiv.style.display = "none";
+            }
+        });
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function calculateValues() {
+            let quantity = parseFloat(document.querySelector("[name='quanty']").value) || 0;
+            let rate = parseFloat(document.querySelector("[name='ratee']").value) || 0;
+            let allowdis = parseFloat(document.querySelector("[name='allowdis']").value) || 0;
+            let requestdis = parseFloat(document.querySelector("[name='requestdis']").value) || 0;
+            let taxPercent = parseFloat(document.querySelector("[name='tax']").value) || 0;
+
+            let baseTotal = quantity * rate;  // Quantity × Rate
+
+            let discount = 0;
+            if (requestdis > 0) {
+                discount = (baseTotal * requestdis) / 100; // Apply Requested Discount
+            } else if (allowdis > 0) {
+                discount = (baseTotal * allowdis) / 100; // Apply Allowed Discount
+            }
+
+            let lineBasicTotal = baseTotal - discount; // Final Amount After Discount
+
+            let taxAmount = (lineBasicTotal * taxPercent) / 100; // Calculate Tax Amount
+
+            let grandTotal = lineBasicTotal + taxAmount; // Final Grand Total
+
+            // Set calculated values
+            document.querySelector("[name='lbt']").value = lineBasicTotal.toFixed(2);
+            document.querySelector("[name='taxamt']").value = taxAmount.toFixed(2);
+            document.querySelector("[name='grandtotal']").value = grandTotal.toFixed(2);
+        }
+
+        // Attach event listeners
+        document.querySelector("[name='quanty']").addEventListener("keyup", calculateValues);
+        document.querySelector("[name='requestdis']").addEventListener("keyup", calculateValues);
+        document.querySelector("[name='allowdis']").addEventListener("keyup", calculateValues);
+    });

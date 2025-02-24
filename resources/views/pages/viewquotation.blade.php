@@ -10,7 +10,7 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
-                            <h5 class="mt-2">Design Enquires</h5>
+                            <h5 class="mt-2">Quotation Enquires</h5>
                         </div>
                         <div class="col-lg-6">
 

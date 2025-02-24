@@ -11,6 +11,8 @@
             </div>
         </div>
     </div>
+    @if (Auth::user()->role == 'Super Admin')
+
     <div class="row mt-5" >
         <h2 class="card-title me-2">Follow Up Summary</h2>
         <div class="col-xl-3 col-md-6">
@@ -223,6 +225,10 @@ $modalId = 'Modal' . str_replace(' ', '_', $leadsta->dropdowndata);
             </div>
         </div> --}}
     </div>
+
+    @else
+
+    @endif
 </div>
 
 <div class="modal fade" id="leadsModal" tabindex="-1" aria-labelledby="leadsModalLabel" aria-hidden="true">

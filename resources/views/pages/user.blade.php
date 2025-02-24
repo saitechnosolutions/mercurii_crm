@@ -11,6 +11,10 @@
                         <h5 class="mt-2 mb-4">Users</h5>
                     </div>
                     <div class="col-lg-6" style="text-align: end;">
+                        {{-- <a  href="/addrole" class="btn btn-primary  waves-effect waves-light"
+                                        >
+                                        <i class="mdi mdi-plus"></i> Add Role
+                    </a> --}}
                         <button type="button" class="btn btn-primary  waves-effect waves-light"
                                         data-bs-toggle="modal" data-bs-target=".bs-example-modal-center2"
                                         data-id="" data-name="">
@@ -70,6 +74,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="modal fade bs-example-modal-center2" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

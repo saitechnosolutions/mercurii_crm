@@ -24,14 +24,35 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
         <form method="POST" action="/saveleads">
             <div class="row mb-4">
                 @csrf
-                <div class="col-lg-6" >
+                <div class="col-lg-6">
+                    <div class="form-group mt-4">
+                        <label for="customerSelect" class="form-label">
+                            Customer Name <span style="color:red">*</span>
+                        </label>
+                        <!-- Select2 dropdown -->
+                        <select id="customerSelect" name="LeadName" class="form-control" required>
+                            <option value="">Select Customer</option>
+                            <option value="new">New Customer</option>
+                            @if ($customers = App\Models\Customer::all())
+                            @foreach($customers as $customer)
+                <option value="{{ $customer->customername }}" data-id="{{ $customer->id }}">{{ $customer->customername }}</option>
+            @endforeach
+            @endif
+                        </select>
+
+                        <!-- New Customer Name Input (Hidden initially) -->
+                        <input type="text" id="newCustomerName" name="newCustomerName" class="form-control mt-2" placeholder="Enter New Customer Name" style="display: none;">
+                    </div>
+                </div>
+                {{-- <div class="col-lg-6" >
                     <div class="form-group mt-4">
                         <label for="exampleFormControlInput1"
                             class="form-label">Customer Name <span
                             style="color:red">*</span></label>
                             <input type="text" name="LeadName" class="form-control" placeholder="Customer Name"  required >
                     </div>
-                </div>
+                </div> --}}
+                <input type="hidden" name="customeriid"  class="form-control" value="" placeholder=""  required >
                 <div class="col-lg-6" >
                     <div class="form-group mt-4">
                     <label for="exampleFormControlInput1" class="form-label">Source of Enquiry <span
@@ -55,7 +76,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Billing Address <span
                             style="color:red">*</span></label>
-                            <textarea name="billaddress" class="form-control" placeholder="Billing Address"  required ></textarea>
+                            <textarea name="billaddress" class="form-control" id="address" placeholder="Billing Address"  required ></textarea>
                     </div>
                 </div>
                 <div class="col-lg-6" >
@@ -71,7 +92,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Billing Country <span
                             style="color:red">*</span></label>
-                            <select class="form-select " name="billingcountry" required>
+                            <select class="form-select " name="billingcountry" id="country" required>
                                 @foreach($countries as $country)
                                 <option value="{{ $country->id }}"
                                     {{ $country->id == 76 ? 'selected' : '' }}>
@@ -88,7 +109,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Contact Name <span
                             style="color:red">*</span></label>
-                            <input type="text" name="contactname" class="form-control" placeholder="Contact Name"  required >
+                            <input type="text" name="contactname" id="contactName" class="form-control" placeholder="Contact Name"  required >
                     </div>
                 </div>
                 <div class="col-lg-6" >
@@ -113,7 +134,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">E-mail <span
                             style="color:red">*</span></label>
-                            <input type="email" name="email" class="form-control" placeholder="E-mail"  required >
+                            <input type="email" name="email" class="form-control" id="cus_email" placeholder="E-mail"  required >
                     </div>
                 </div>
                 <div class="col-lg-6" >
@@ -121,7 +142,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Billing City <span
                             style="color:red">*</span></label>
-                            <select class="form-select " name="citylist" required>
+                            <select class="form-select " name="citylist" id="city_list" required>
                                 <option value=""> -- Choose City -- </option>
 
                             </select>
@@ -133,7 +154,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Country Code <span
                             style="color:red">*</span></label>
-                            <select class="form-select " name="countrycode" required>
+                            <select class="form-select " name="countrycode" id="country_code" required>
                                 @foreach($countries as $country)
                                 <option value="{{ $country->id }}"
                                     {{ $country->id == 76 ? 'selected' : '' }}>
@@ -148,7 +169,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Contact Number <span
                             style="color:red">*</span></label>
-                            <input type="decimal" name="phonumber" class="form-control" placeholder="Contact Number"  required >
+                            <input type="decimal" name="phonumber" id="contact_no" class="form-control" placeholder="Contact Number"  required >
                     </div>
                 </div>
                 <div class="col-lg-6" >
@@ -156,7 +177,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">Billing Postal Code <span
                             style="color:red">*</span></label>
-                            <input type="decimal" name="postalcode" class="form-control" placeholder="Postal Code"  required >
+                            <input type="decimal" name="postalcode" id="postalcode" class="form-control" placeholder="Postal Code"  required >
                     </div>
                 </div>
                 <div class="col-lg-3" >
@@ -186,7 +207,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         <label for="exampleFormControlInput1"
                             class="form-label">GST NO <span
                             style="color:red">*</span></label>
-                            <input type="decimal" name="gst" class="form-control" placeholder="GST NO"  required >
+                            <input type="decimal" name="gst" id="ggst" class="form-control" placeholder="GST NO"  required >
                     </div>
                 </div>
                 <div class="col-lg-6" >
@@ -203,6 +224,31 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         </select>
                     </div>
                 </div>
+                   {{-- @if ($product = App\Models\Product::get())
+                                    @foreach ($product as $dataproduct)
+                                        <option value="{{ $dataproduct->id }}"
+                                            >
+                                            {{ $dataproduct->productname }}</option>
+                                    @endforeach
+                                @endif --}}
+                {{-- <div class="col-lg-6" >
+                    <div class="form-group mt-4">
+                        <label for="exampleFormControlInput1"
+                            class="form-label">Categories <span
+                            style="color:red">*</span></label>
+                            <select class="form-select " name="category" id="catepro" required>
+                                <option value=""> Choose Category </option>
+                                @if ($status = App\Models\Dropdowndata::where('formid', 7)->orderBy('orderno', 'asc')->get())
+                                @foreach ($status as $data)
+                                    <option value="{{ $data->id }}"
+                                        >
+                                        {{ $data->dropdowndata }}</option>
+                                @endforeach
+                            @endif
+
+                            </select>
+                    </div>
+                </div>
                 <div class="col-lg-6" >
                     <div class="form-group mt-4">
                         <label for="exampleFormControlInput1"
@@ -210,18 +256,11 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                             style="color:red">*</span></label>
                             <select class="form-select " name="products" required>
                                 <option value=""> Choose Product </option>
-                                @if ($product = App\Models\Product::get())
-                                    @foreach ($product as $dataproduct)
-                                        <option value="{{ $dataproduct->id }}"
-                                            >
-                                            {{ $dataproduct->productname }}</option>
-                                    @endforeach
-                                @endif
 
                             </select>
                     </div>
-                </div>
-                <div class="col-lg-6" >
+                </div> --}}
+                {{-- <div class="col-lg-6" >
                     <div class="form-group mt-4">
                     <label for="exampleFormControlInput1" class="form-label">Status of Enquiry <span
                             style="color:red">*</span></label>
@@ -238,7 +277,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                     </select>
 
                 </div>
-                </div>
+                </div> --}}
                 <div class="col-lg-6">
                     <div class="form-group mt-4">
                         <label for="exampleFormControlInput1" class="form-label">Enquiry Date <span style="color:red">*</span></label>

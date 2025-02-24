@@ -60,6 +60,13 @@
                         <th>Source of Enquiry</th>
                                 <td>{{ $dropdownValue ?? '-' }}</td>
                     </tr>
+                    @php
+                                            $dropdownValue = App\Models\Dropdowndata::where('id', $lead->Leadstatus)->value('dropdowndata');
+                                        @endphp
+                    <tr>
+                        <th>Enquiry Status</th>
+                                <td>{{ $dropdownValue ?? '-' }}</td>
+                    </tr>
                     <tr>
                         <th>Enquiry Date</th>
                                 <td>{{ $lead->Entrydate }}</td>
@@ -172,9 +179,9 @@
                   <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pills-quota-tab" data-bs-toggle="pill" data-bs-target="#pills-quota" type="button" role="tab" aria-controls="pills-quota" aria-selected="false">Enquiry Status</button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  {{-- <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-Products-tab" data-bs-toggle="pill" data-bs-target="#pills-Products" type="button" role="tab" aria-controls="pills-Products" aria-selected="false">Enquiry Products</button>
-                  </li>
+                  </li> --}}
               </ul>
               <div class="tab-content" id="pills-tabContent">
                 {{-- <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">

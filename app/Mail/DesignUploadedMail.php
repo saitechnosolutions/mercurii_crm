@@ -2,26 +2,29 @@
 
 namespace App\Mail;
 
-use App\Models\Lead;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 
-class LeadCreatedMail extends Mailable
+class DesignUploadedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $lead;
+
+    public $data;
+    public $filePath;
     /**
      * Create a new message instance.
      */
-    public function __construct(Lead $lead)
+    public function __construct($data, $filePath)
     {
         //
-        $this->lead = $lead;
+        $this->data = $data;
+        $this->filePath = $filePath;
     }
 
     /**
@@ -30,7 +33,7 @@ class LeadCreatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Lead Assigned',
+            subject: 'New Design Uploaded'
         );
     }
 
@@ -40,8 +43,8 @@ class LeadCreatedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.lead_created',  // Change to your actual view file
-            with: ['lead' => $this->lead]
+            view: 'emails.design_created', // Create this Blade file
+            with: ['data' => $this->data]
         );
     }
 
@@ -52,6 +55,12 @@ class LeadCreatedMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        $attachments = [];
+
+        if ($this->filePath) {
+            $attachments[] = Attachment::fromPath(public_path($this->filePath));
+        }
+
+        return $attachments;
     }
 }
