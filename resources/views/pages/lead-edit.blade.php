@@ -368,7 +368,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-6" >
+                {{-- <div class="col-lg-6" >
                     <div class="form-group mt-4">
                         <label for="exampleFormControlInput1"
                             class="form-label">Products <span
@@ -384,8 +384,8 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
 
                             </select>
                     </div>
-                </div>
-                <div class="col-lg-6" >
+                </div> --}}
+                {{-- <div class="col-lg-6" >
                     <div class="form-group mt-4">
                     <label for="exampleFormControlInput1" class="form-label">Status of Enquiry <span
                             style="color:red">*</span></label>
@@ -401,7 +401,7 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
                     </select>
 
                 </div>
-                </div>
+                </div> --}}
                 @php
                                             $dateformat = date('Y-m-d', strtotime($row->Entrydate));
                                         @endphp

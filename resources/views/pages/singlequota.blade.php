@@ -463,6 +463,7 @@
                                         ->get();
 
                             $i = count($estimates); // Start numbering from the oldest (reverse order)
+                            $lastQuotationId = $estimates->first()->id ?? null;
                         @endphp
 
                         @if($estimates->isNotEmpty())
@@ -510,11 +511,13 @@
                                                             <i class="fa fa-download" aria-hidden="true"></i> Download
                                                         </a>
                                                     </li>
+                                                    @if($e->id == $lastQuotationId)
                                                     <li>
                                                         <a class="dropdown-item" href="/orf/{{ $e->id }}">
                                                             <i class="fa fa-arrow-right" aria-hidden="true"></i> Move to ORF
                                                         </a>
                                                     </li>
+                                                    @endif
                                                 </ul>
                                             </li>
                                         </ul>

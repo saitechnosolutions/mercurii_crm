@@ -175,6 +175,6 @@ class QuotationDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Lead_' . date('YmdHis');
+        return 'Quotation_' . date('YmdHis');
  }
 }

@@ -83,11 +83,11 @@ class Controller extends BaseController
         $adminEmail = 'nvikram.sts@gmail.com'; // Replace with your admin email
         $assignedUserEmail = User::find($assignto)->email ?? null;
 
-        Mail::to($adminEmail)->send(new LeadCreatedMail($leadrt));
+        // Mail::to($adminEmail)->send(new LeadCreatedMail($leadrt));
 
-        if ($assignedUserEmail) {
-            Mail::to($assignedUserEmail)->send(new LeadCreatedMail($leadrt));
-        }
+        // if ($assignedUserEmail) {
+        //     Mail::to($assignedUserEmail)->send(new LeadCreatedMail($leadrt));
+        // }
 
         return redirect()->route('pages.leads')->with('success', 'Lead saved successfully!');
 
@@ -627,15 +627,21 @@ public function generatePDF($id)
         // dd($quotation->toArray());
         return view('quotations.pdf', compact('quotation'));
     }
-
+   
 
     public function createorf($id){
-        $quto = QuotationProduct::find($id);
+        $quto = QuotationProduct::with(['lead'])->find($id);
+
+        $estimates = QuotationProduct::where('leadno', $quto->leadno)
+                                ->orderBy('id', 'DESC')
+                                ->get();
+
+    $i = count($estimates);
 
 
 
         // Pass lead data to the view
-        return view('pages.orfform', compact('quto'));
+        return view('pages.orfform', compact('quto', 'estimates', 'i'));
 
     }
 

@@ -178,11 +178,11 @@ fetchCities(data.state, data.city);
         </script>
 
 <script>
-    var updateStatusUrl = "{{ route('lead.updateStatusdf') }}"; // Laravel will process this
+    var updatellStatusUrl = "{{ route('lead.updateStatusdf') }}"; // Laravel will process this
 
     $(document).ready(function() {
         $(document).on('click', '.change-status-btn', function() {
-            var leadId = $(this).data('id');
+            var leadId = $(this).data('ids');
             $('#lead_id').val(leadId);
             $('#statusModal').modal('show');
         });
@@ -191,7 +191,7 @@ fetchCities(data.state, data.city);
             e.preventDefault();
 
             $.ajax({
-                url: updateStatusUrl, // This will now be parsed correctly
+                url: updatellStatusUrl, // This will now be parsed correctly
                 method: "POST",
                 data: $(this).serialize(),
                 success: function(response) {
@@ -201,6 +201,78 @@ fetchCities(data.state, data.city);
                         $('#leads').DataTable().ajax.reload();
                     } else {
                         alert("Something went wrong!");
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var updateorStatusUrl = "{{ route('orf.insertStatusorf') }}"; // Laravel will process this
+
+    $(document).ready(function() {
+        $(document).on('click', '.orf-status-btn', function() {
+            var leadId = $(this).data('id');
+            var cssta = $(this).data('cssta');
+            $('#orfid').val(leadId);
+            $('#cssta').val(cssta);
+            $('#statusModale').modal('show');
+        });
+
+        $('#orfstatus').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: updateorStatusUrl,
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        alert("Status Updated Successfully!");
+                        $('#statusModale').modal('hide');
+                        $('#orf').DataTable().ajax.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var updateCsStatusUrl = "{{ route('orf.updatecsStatusorf') }}";
+
+    $(document).ready(function() {
+        $(document).on('click', '.orf-csstatus-btn', function() {
+            var leadId = $(this).data('rid');
+            var appsta = $(this).data('appsta'); // Fix: Use correct data attribute
+            $('#orfidcs').val(leadId);
+            $('#appsta').val(appsta);
+            $('#statusModalcs').modal('show');
+        });
+
+        $('#orfcsstatus').on('submit', function(e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: updateCsStatusUrl,
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        alert("CS Status Updated Successfully!");
+                        $('#statusModalcs').modal('hide');
+                        $('#orf').DataTable().ajax.reload();
+                    } else {
+                        alert(response.message);
                     }
                 },
                 error: function(xhr) {

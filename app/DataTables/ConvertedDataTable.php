@@ -179,6 +179,6 @@ class ConvertedDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Lead_' . date('YmdHis');
+        return 'Converted_' . date('YmdHis');
  }
 }

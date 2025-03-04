@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrfController;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -82,7 +83,7 @@ Route::post('/getfandfreports', [Controller::class,'getfandfreports']);
 Route::post('/getfandfrep', [Controller::class,'getfandfrep']);
 Route::post('/saveleads',[Controller::class,'saveleads']);
 Route::get('/get-customer-data/{id}', [CustomerController::class, 'getCustomerData']);
-Route::post('/lead/update-status', [Controller::class, 'updateStatusdf'])->name('lead.updateStatusdf');
+Route::post('/lead/update-Statusdf', [Controller::class, 'updateStatusdf'])->name('lead.updateStatusdf');
 Route::post('/upload-document', [Controller::class, 'designapproval'])->name('document.upload');
 Route::get('/get-cities/{state_id}', function ($state_id) {
     return App\Models\Citylist::where('state_code', $state_id)->get();
@@ -105,7 +106,15 @@ Route::post('/createestimate', [Controller::class, 'createestimate'])->name('cre
 Route::get('/quotation-pdf/{id}', [Controller::class, 'generatePDF'])->name('quotation.pdf');
 Route::get('/quotation/view/{id}', [Controller::class, 'viewQuotation'])->name('quotation.view');
 Route::view('/quopdf2','quotations.pdf2');
+// orf
 Route::get('/orf/{id}',[Controller::class, 'createorf'])->name('createorf');
+Route::post('/store-orf', [OrfController::class, 'store'])->name('orf.store');
+Route::get('/vieworf', [OrfController::class, 'vieworf'])->name('pages.vieworf');
+Route::get('/vieworfapp', [OrfController::class, 'vieworfapp'])->name('pages.vieworfapp');
+Route::post('/orf/insert-statusorf', [OrfController::class, 'insertStatusorf'])->name('orf.insertStatusorf');
+Route::post('/orf/update-csstatus', [OrfController::class, 'updatecsStatusorf'])->name('orf.updatecsStatusorf');
+Route::view('/invoice','quotations.invoice');
+Route::get('/orfdetail/view/{id}', [OrfController::class, 'vieworfinvoice'])->name('orfdetail.view');
 
 // activities
 Route::view('/activities', 'pages.createactivities')->name('activities');

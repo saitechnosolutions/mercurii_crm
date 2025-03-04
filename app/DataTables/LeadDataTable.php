@@ -65,7 +65,7 @@ class LeadDataTable extends DataTable
                     <i class='mdi mdi-chevron-down'></i>
                 </button>
                 <ul class='dropdown-menu'>
-                    <li><a class='dropdown-item change-status-btn' href='javascript:void(0)'  data-bs-toggle='modal' data-bs-target='#statusModal' data-id='{$query->id}'>Change Status</a></li>
+                    <li><a class='dropdown-item change-status-btn' href='javascript:void(0)'  data-bs-toggle='modal' data-bs-target='#statusModal' data-ids='{$query->id}'>Change Status</a></li>
                     <li><a class='dropdown-item' target='_blank' href='javascript:void(0)'>View</a></li>
                     <li><a class='dropdown-item' href='javascript:void(0)'>Delete</a></li>
                 </ul>
