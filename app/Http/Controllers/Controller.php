@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\Customer;
 use App\Models\Design;
 use App\Models\Field;
+use App\Models\Freight;
 use App\Models\Lead;
 use App\Models\LeadDesign;
 use App\Models\LeadProduct;
@@ -602,6 +603,23 @@ public function createestimate(Request $request)
         'grandtotal' => $request->grandtotal,
     ]);
 
+    Freight::create([
+        'leadnumber' => $request->leadno,
+        'quotationno' => $request->quotationno,
+        'termscondition' => $request->termscondition,
+        'dov' => $request->dov,
+        'freight' => $request->freight,
+        'exwork' => $request->exwork,
+        'freightextra' => $request->freightextra,
+        'unloading' => $request->unloading,
+        'remarks' => $request->remarks,
+        'currency' => $request->currency,
+        'warranty' => $request->warranty,
+        'installation' => $request->installation,
+        'agent' => $request->agent,
+        'amount' => $request->ammt,
+    ]);
+
     return redirect()->route('single.quota', ['leadid' => $quotationProduct->leadno])
                      ->with('success', 'Estimate created successfully!');
 }
@@ -627,7 +645,7 @@ public function generatePDF($id)
         // dd($quotation->toArray());
         return view('quotations.pdf', compact('quotation'));
     }
-   
+
 
     public function createorf($id){
         $quto = QuotationProduct::with(['lead'])->find($id);
