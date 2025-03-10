@@ -211,7 +211,7 @@
                                 <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                     <!-- vendor menu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
