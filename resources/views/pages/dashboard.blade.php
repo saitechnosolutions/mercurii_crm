@@ -14,14 +14,14 @@
     @if (Auth::user()->role == 'Super Admin')
 
     <div class="row mt-5" >
-        <h2 class="card-title me-2">Follow Up Summary</h2>
+        <h2 class="card-title me-2">Total Order Booking</h2>
         <div class="col-xl-3 col-md-6">
 
             <div class="card card-h-70" style="background:#fc6704;border-radius:15px;height: 90px;">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class=" mb-3 lh-1 d-block text-truncate" style="color:#fff;">Today</span>
+                            <span class=" mb-3 lh-1 d-block text-truncate" style="color:#fff;">Sales</span>
 
                             <h4 class="mb-3">
 
@@ -38,7 +38,7 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <span class=" mb-3 lh-1 d-block text-truncate" style="color:#fff;">Tomorrow</span>
+                            <span class=" mb-3 lh-1 d-block text-truncate" style="color:#fff;">Services</span>
                             <h4 class="mb-3">
                                 <span class="counter-value" data-target="0" style="color:#fff;">0</span>
                             </h4>
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6">
+        {{-- <div class="col-xl-3 col-md-6">
             <div class="card card-h-70" style="background:#366a7d;border-radius:15px;height: 90px;">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
     <div class="row">
         <h2 class="card-title me-2">Leads Status Summary</h2>

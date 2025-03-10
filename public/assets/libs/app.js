@@ -68,8 +68,30 @@ $("#fieldtype").change(function () {
 
 $(".addfields").click(function () {
     var main = $("#optionfielddetails");
-    var optionfielddetails =
-        '<tr><td><input type="text" class="form-control" name="orderno[]"></td><td><input type="text" class="form-control" name="optionname[]"></td><td><button class="btn btn-danger remove" type="button">Remove</button></td></tr>';
+    var optionfielddetails = `
+        <tr>
+            <td>
+                <input type="text" class="form-control" name="orderno[]">
+            </td>
+            <td>
+                <input type="text" class="form-control" name="optionname[]">
+            </td>
+            <td>
+                <select class="form-control" name="mhe_rack[]">
+                    <option value="MHE">MHE</option>
+                    <option value="Rack">Rack</option>
+                </select>
+            </td>
+            <td>
+                <select class="form-control" name="pro_catid[]">
+                    <option value="Special">Special</option>
+                    <option value="Standard">Standard</option>
+                </select>
+            </td>
+            <td>
+                <button class="btn btn-danger remove" type="button">Remove</button>
+            </td>
+        </tr>`;
 
     main.append(optionfielddetails);
 });

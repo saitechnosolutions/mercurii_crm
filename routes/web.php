@@ -122,3 +122,9 @@ Route::view('/activities', 'pages.createactivities')->name('activities');
 // quotatu
 Route::get('/viewconverted', [Controller::class, 'viewconvert'])->name('pages.viewconverted');
 Route::get('/viewquota', [Controller::class, 'viewquota'])->name('pages.viewquotation');
+
+
+// reports
+
+Route::view('/viewreport', 'pages.reports');
+Route::view('/vendorinvoice', 'quotations.vendorinvoice');

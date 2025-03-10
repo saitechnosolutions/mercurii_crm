@@ -103,6 +103,38 @@
     <script src="/assets/js/pages/datatables.init.js"></script>
 
     <script src="/assets/js/app.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#technicalClosure').DataTable({
+                responsive: true,
+                autoWidth: false
+            });
+        });
+        </script>
+          <script>
+            $(document).ready(function() {
+                $('#pendingTasks').DataTable({
+                    responsive: true,
+                    autoWidth: false
+                });
+            });
+            </script>
+              <script>
+                $(document).ready(function() {
+                    $('#pendingEnquiry').DataTable({
+                        responsive: true,
+                        autoWidth: false
+                    });
+                });
+                </script>
+                  <script>
+                    $(document).ready(function() {
+                        $('#businessRequirement').DataTable({
+                            responsive: true,
+                            autoWidth: false
+                        });
+                    });
+                    </script>
 
     <script>
         $(document).ready(function() {

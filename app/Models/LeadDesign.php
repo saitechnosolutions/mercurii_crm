@@ -19,7 +19,10 @@ class LeadDesign extends Model
         'document',
         'assignee',
         'assigneeto',
-        'reverse'
+        'reverse',
+        'offer',
+        'drawing',
+        'pricevalue'
     ];
 
     public function lead()

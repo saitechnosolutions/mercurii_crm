@@ -10,6 +10,7 @@ use App\Mail\LeadCreatedMail;
 use App\Models\Country;
 use App\Models\Customer;
 use App\Models\Design;
+use App\Models\Dropdowndata;
 use App\Models\Field;
 use App\Models\Freight;
 use App\Models\Lead;
@@ -356,6 +357,22 @@ public function storedesign(Request $request)
         $filePath = 'assets/images/' . $filename;
         $data['document'] = $filePath;
     }
+    if ($request->hasFile('drawing')) {
+        $file = $request->file('drawing');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('assets/images/');
+        $file->move($destinationPath, $filename);
+        $filePath = 'assets/images/' . $filename;
+        $data['drawing'] = $filePath;
+    }
+    if ($request->hasFile('offer')) {
+        $file = $request->file('offer');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('assets/images/');
+        $file->move($destinationPath, $filename);
+        $filePath = 'assets/images/' . $filename;
+        $data['offer'] = $filePath;
+    }
     $data['assignee'] = auth()->id();
     $data['reverse'] = ($data['assignee'] == ($data['assigneeto'] ?? null)) ? 1 : 0;
     // if ($request->hasFile('document')) {
@@ -490,9 +507,13 @@ public function updateStatusdf(Request $request)
         }
 
         // Determine the table for insertion
-        $categoriesForDesign = [354, 355, 358];
+        // $categoriesForDesign = [354, 355, 358];
+        $categoriesForDesign = Dropdowndata::where('id', $request->category)
+                                     ->where('pro_catid', 'Special')
+                                     ->exists();
 
-        if (in_array($request->category, $categoriesForDesign)) {
+        // if (in_array($request->category, $categoriesForDesign)) {
+            if ($categoriesForDesign) {
             // Insert into `designs` table
             Design::create([
                 'idlead' => $lead->id,

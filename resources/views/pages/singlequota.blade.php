@@ -388,11 +388,33 @@
                                 </div>
                                 <div class="col-lg-6 mt-2">
                                     <div class="form-group">
-                                        <label for="document" class="form-label">Document / File</label>
+                                        <label for="document" class="form-label">Design Document / File</label>
                                         <input type="file" class="form-control" name="document" id="document">
                                     </div>
                                 </div>
+                                <div class="col-lg-6 mt-2">
+                                </div>
+                                @if (Auth::user()->role == 'Design')
                                 <div class="col-lg-4 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Offer</label>
+                                        <input type="file" class="form-control" name="offer" id="document1">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Drawing</label>
+                                        <input type="file" class="form-control" name="drawing" id="document2">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mt-2">
+                                    <div class="form-group">
+                                        <label for="document" class="form-label">Value</label>
+                                        <input type="text" class="form-control" name="pricevalue" >
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="col-lg-10 mt-2">
                                 </div>
                                 <div class="col-lg-2 mt-2 justify-content-center">
                                     <div class="form-group">
@@ -402,6 +424,8 @@
                                             style="color:#fff;">Add</button>
                                     </div>
                                 </div>
+                                {{-- <div class="col-lg-4 mt-2">
+                                </div> --}}
 
                             </div>
                         </div>
@@ -412,10 +436,30 @@
                     <div class="notes-form-details">
                         <div class="notes-form-box " style="border-left: 8px solid {{ $de->reverse == 1 ? '#ff6501' : '#1b5683' }};">
                             <div class="button-box">
+                                {{-- Offer Download --}}
+                    @if($de->offer)
+                    <a class="btn btn-primary p-2" target="_blank" href="{{ asset($de->offer) }}" download>
+                        <i class="fa fa-download"></i> Offer
+                    </a>
+                @endif
+
+                {{-- Drawing Download --}}
+                @if($de->drawing)
+                    <a class="btn btn-warning p-2" target="_blank" href="{{ asset($de->drawing) }}" download>
+                        <i class="fa fa-download"></i> Drawing
+                    </a>
+                @endif
+
+                {{-- View Price Value --}}
+                @if($de->pricevalue)
+                    <a class="btn btn-info p-2" >
+                       {{ $de->pricevalue }}
+                    </a>
+                @endif
 
                                     <a class="btn btn-success p-2" target="_blank" href="{{ asset($de->document) }}"
                                         download ><i class="fa fa-download"
-                                            aria-hidden="true"></i></a>
+                                            aria-hidden="true"></i> Design</a>
                                             @if(auth()->id() == $de->assignee)
                                 <button class="btn text-primary notesedit p-2"
                                     data-id="" data-bs-toggle="modal" data-bs-target="#leadeditModal"><i class="mdi mdi-lead-pencil"
@@ -426,6 +470,7 @@
                                         @endif
                             </div>
                             <p>{!! $de->design !!}</p>
+                            <span style="background-color:#00CFF4">{{ \DB::table('users')->where('id', $de->assignee)->value('name') ?? 'Unknown' }}</span>
 
                                 {{-- <span style="background-color:#fbbd54">leadid</span>
 

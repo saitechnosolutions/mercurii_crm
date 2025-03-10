@@ -172,24 +172,76 @@ class FieldController extends Controller {
         // ->where('formid','=',$formid)
         // ->delete();
 
-        $orderno = $request->orderno;
+        // $orderno = $request->orderno;
 
+        if ($fieldtype == 7) {
+            // **Step 1: Get existing order numbers for the form**
+            $existingOrderNumbers = DB::table('dropdowndatas')
+                ->where('formid', $formid)
+                ->pluck('orderno')
+                ->toArray();
 
-        if($fieldtype == 7)
-        {
-            foreach($orderno as $key => $or)
-            {
-                $ordern = $request->orderno[$key];
-                $optionname = $request->optionname[$key];
+            // **Step 2: Collect new order numbers from request**
+            $newOrderNumbers = $request->orderno ?? [];
 
+            // **Step 3: Find records that need to be deleted**
+            $orderNumbersToDelete = array_diff($existingOrderNumbers, $newOrderNumbers);
+
+            // **Step 4: Delete records that are missing in the new request**
+            if (!empty($orderNumbersToDelete)) {
                 DB::table('dropdowndatas')
-                ->insert([
-                    "formid"=>$formid,
-                    "dropdowndata"=>$optionname,
-                    "orderno"=>$ordern,
-                ]);
+                    ->where('formid', $formid)
+                    ->whereIn('orderno', $orderNumbersToDelete)
+                    ->delete();
+            }
+
+            // **Step 5: Insert or update remaining records**
+            foreach ($request->orderno as $key => $ordern) {
+                $optionname = $request->optionname[$key];
+                $mhe_rack = $request->mhe_rack[$key];
+                $pro_catid = $request->pro_catid[$key];
+
+                $existingData = DB::table('dropdowndatas')
+                    ->where('formid', $formid)
+                    ->where('orderno', $ordern)
+                    ->first();
+
+                if ($existingData) {
+                    // Update existing record
+                    DB::table('dropdowndatas')
+                        ->where('id', $existingData->id)
+                        ->update([
+                            "dropdowndata" => $optionname,
+                            "mhe_rack" => $mhe_rack,
+                            "pro_catid" => $pro_catid,
+                        ]);
+                } else {
+                    // Insert new record
+                    DB::table('dropdowndatas')->insert([
+                        "formid" => $formid,
+                        "orderno" => $ordern,
+                        "dropdowndata" => $optionname,
+                        "mhe_rack" => $mhe_rack,
+                        "pro_catid" => $pro_catid,
+                    ]);
+                }
             }
         }
+        // if($fieldtype == 7)
+        // {
+        //     foreach($orderno as $key => $or)
+        //     {
+        //         $ordern = $request->orderno[$key];
+        //         $optionname = $request->optionname[$key];
+
+        //         DB::table('dropdowndatas')
+        //         ->insert([
+        //             "formid"=>$formid,
+        //             "dropdowndata"=>$optionname,
+        //             "orderno"=>$ordern,
+        //         ]);
+        //     }
+        // }
 
         return back()->with('message','Form Updated Successfully...');
     }

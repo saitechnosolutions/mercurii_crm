@@ -141,6 +141,7 @@
 
                             <a href="{{ url('/users') }}" class="dropdown-item"
                                 data-key="t-calendar">Users</a>
+
                                 <a href="{{ url('/products') }}" class="dropdown-item"
                                 data-key="t-calendar">Products</a>
                                 <a href="{{ url('/customer') }}" class="dropdown-item"
@@ -184,6 +185,12 @@
                             <i data-feather="home"></i><span data-key="t-dashboards">ORF</span>
                         </a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/viewreport" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Reports</span>
+                        </a>
+                    </li>
                     @endif
                     @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Cs' )
                     <li class="nav-item dropdown">
@@ -194,8 +201,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-                            {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
-                                Customization</a> --}}
+                            <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
+                                Customization</a>
 
                             <a href="/vieworf" class="dropdown-item"
                                 data-key="t-calendar">ORF Approval</a>
@@ -223,7 +230,6 @@
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <!-- item-->
 
                     <a class="dropdown-item" href="/logout"><i
                             class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>

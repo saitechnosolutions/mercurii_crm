@@ -23,7 +23,7 @@
         @endif
         <div class="container ">
             <div class="row">
-                <div class="col-lg-6 offset-lg-3 shadow bg-white p-3" style="border-radius:10px">
+                <div class="col-lg-8 offset-lg-3 shadow bg-white p-3" style="border-radius:10px">
                     <form method="POST" action="/updateformdetails">
                         @csrf
                         <div class="col-lg-12">
@@ -94,11 +94,18 @@
                                             <tr>
                                                 <th>Order number</th>
                                                 <th>Option name</th>
+                                                <th>MHE/Rack</th>
+                                                <th>Special/Standard</th>
                                                 <th><button class="btn btn-primary addfields w-100 btn-sm"
                                                         type="button">Add</button></th>
                                             </tr>
                                         </thead>
                                         <tbody id="optionfielddetails">
+                                            @php
+                                              $mheRackOptions = ['MHE', 'Rack'];
+                                              $proCatOptions = ['Special', 'Standard'];
+
+                                            @endphp
                                             @if ($dropdownfields = App\Models\Dropdowndata::where('formid', $row->id)->get())
                                                 @foreach ($dropdownfields as $d)
                                                     <tr>
@@ -106,6 +113,24 @@
                                                                 value="{{ $d->orderno }}" required></td>
                                                         <td><input type="text" class="form-control" name="optionname[]"
                                                                 value="{{ $d->dropdowndata }}" required></td>
+                                                                <td>
+                                                                    <select class="form-control" name="mhe_rack[]">
+                                                                        @foreach ($mheRackOptions as $option)
+                                                                            <option value="{{ $option }}" {{ $d->mhe_rack == $option ? 'selected' : '' }}>
+                                                                                {{ $option }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-control" name="pro_catid[]">
+                                                                        @foreach ($proCatOptions as $option)
+                                                                            <option value="{{ $option }}" {{ $d->pro_catid == $option ? 'selected' : '' }}>
+                                                                                {{ $option }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </td>
                                                         <td><button class="btn btn-danger remove btn-sm"
                                                                 type="button">Remove</button></td>
                                                     </tr>

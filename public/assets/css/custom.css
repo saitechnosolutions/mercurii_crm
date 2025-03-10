@@ -212,3 +212,11 @@ body {
     color: #000;
     background-color: #f7f7f7;
 }
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+}
