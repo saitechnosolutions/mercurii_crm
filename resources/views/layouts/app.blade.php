@@ -20,14 +20,19 @@
 
     <!-- DataTables -->
     <link href="/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
 
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet" />
+
+    
 
 </head>
 
@@ -42,18 +47,19 @@
         <!-- ============================================================== -->
         {{-- <div class="main-content"> --}}
 
-        <div class="page-content">
-            <div class="container-fluid">
+            <div class="page-content">
+                <div class="container-fluid">
 
-                @yield('main-content')
+                    @yield('main-content')
 
+                </div>
+                <!-- container-fluid -->
             </div>
-            <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
+            <!-- End Page-content -->
 
-        {{-- @include('layouts.footer') --}}
-        {{-- </div> --}}
+            {{-- @include('layouts.footer') --}}
+            {{--
+        </div> --}}
         <!-- end main content-->
 
     </div>
@@ -137,77 +143,103 @@
                     </script>
 
     <script>
-        $(document).ready(function() {
-        // Initialize Select2 for searchable dropdown
-        $('#customerSelect').select2({
-            placeholder: 'Search or Select Customer',
-            allowClear: true
-        });
+        $(document).ready(function () {
+            // Initialize Select2 for searchable dropdown
+            $('#customerSelect').select2({
+                placeholder: 'Search or Select Customer',
+                allowClear: true
+            });
 
-        // Show the input field if "New Customer" is selected
-        $('#customerSelect').change(function () {
-            var customerName = $(this).val();
-            if (customerName === 'new') {
-                $('#newCustomerName').show().prop('required', true);
-                $('#contactName').val(''); // Clear the input fields
-            } else {
-                $('#newCustomerName').hide().prop('required', false);
+            // Show the input field if "New Customer" is selected
+            $('#customerSelect').change(function () {
+                var customerName = $(this).val();
+                if (customerName === 'new') {
+                    $('#newCustomerName').show().prop('required', true);
+                    $('#contactName').val(''); // Clear the input fields
+                } else {
+                    $('#newCustomerName').hide().prop('required', false);
 
-                // Fetch the customer data when an existing customer is selected
-                var customerId = $(this).find(':selected').data('id');
-                if (customerId) {
-                    // Perform an AJAX request to fetch the customer's contact information
-                    $.ajax({
-                        url: '/get-customer-data/' + customerId,  // Route to fetch customer data
-                        method: 'GET',
-                        success: function(data) {
-                            if (data) {
-                                // Populate the input fields with the customer's data
-                                $('#contactName').val(data.contactname);
-                                $('#postalcode').val(data.postalcode);
-                                $('#address').val(data.address);
-                                $('#contact_no').val(data.contact_no);
-                                $('#cus_email').val(data.cus_email);
-                                $('#ggst').val(data.gstno);
-                                $('#country').val(data.country).change();
-                                $('#country_code').val(data.country_code).change();
-                                $('#state_list').val(data.state).change();
+                    // Fetch the customer data when an existing customer is selected
+                    var customerId = $(this).find(':selected').data('id');
+                    if (customerId) {
+                        // Perform an AJAX request to fetch the customer's contact information
+                        $.ajax({
+                            url: '/get-customer-data/' + customerId,  // Route to fetch customer data
+                            method: 'GET',
+                            success: function (data) {
+                                if (data) {
+                                    // Populate the input fields with the customer's data
+                                    $('#contactName').val(data.contactname);
+                                    $('#postalcode').val(data.postalcode);
+                                    $('#address').val(data.address);
+                                    $('#contact_no').val(data.contact_no);
+                                    $('#cus_email').val(data.cus_email);
+                                    $('#ggst').val(data.gstno);
+                                    $('#country').val(data.country).change();
+                                    $('#country_code').val(data.country_code).change();
+                                    $('#state_list').val(data.state).change();
 
-// Fetch cities based on the selected state
-fetchCities(data.state, data.city);
+                                    // Fetch cities based on the selected state
+                                    fetchCities(data.state, data.city);
+                                }
+                            },
+                            error: function () {
+                                alert('Unable to fetch customer data.');
                             }
+                        });
+                    }
+                }
+            });
+
+            function fetchCities(stateId, selectedCity) {
+                if (stateId) {
+                    $.ajax({
+                        url: '/get-cities/' + stateId,  // Fetch cities based on state
+                        method: 'GET',
+                        success: function (response) {
+                            $('#city_list').empty().append('<option value=""> -- Choose City -- </option>');
+
+                            $.each(response, function (index, city) {
+                                $('#city_list').append(
+                                    `<option value="${city.id}" ${city.id == selectedCity ? 'selected' : ''}>${city.city_name}</option>`
+                                );
+                            });
                         },
-                        error: function() {
-                            alert('Unable to fetch customer data.');
+                        error: function () {
+                            alert('Unable to fetch cities.');
+                        }
+                    });
+                }
+            }
+
+            $(document).on("change",'.state_list',function(){
+                
+                fetchCitiesVendor($(this).val());
+            });
+
+            function fetchCitiesVendor(stateId) {
+                if (stateId) {
+                    $.ajax({
+                        url: '/get-cities/' + stateId,
+                        method: 'GET',
+                        success: function (response) {
+                            $('#vendor_city_list').empty().append('<option value=""> -- Choose City -- </option>');
+
+                            $.each(response, function (index, city) {
+                                $('#vendor_city_list').append(
+                                    `<option value="${city.id}">${city.city_name}</option>`
+                                );
+                            });
+                        },
+                        error: function () {
+                            alert('Unable to fetch cities.');
                         }
                     });
                 }
             }
         });
 
-        function fetchCities(stateId, selectedCity) {
-        if (stateId) {
-            $.ajax({
-                url: '/get-cities/' + stateId,  // Fetch cities based on state
-                method: 'GET',
-                success: function(response) {
-                    $('#city_list').empty().append('<option value=""> -- Choose City -- </option>');
-
-                    $.each(response, function(index, city) {
-                        $('#city_list').append(
-                            `<option value="${city.id}" ${city.id == selectedCity ? 'selected' : ''}>${city.city_name}</option>`
-                        );
-                    });
-                },
-                error: function() {
-                    alert('Unable to fetch cities.');
-                }
-            });
-        }
-    }
-});
-
-        </script>
+    </script>
 
 <script>
     var updatellStatusUrl = "{{ route('lead.updateStatusdf') }}"; // Laravel will process this
@@ -316,37 +348,37 @@ fetchCities(data.state, data.city);
 </script>
 
 
-<script>
+    <script>
 
-$('#summernote').summernote({
-        placeholder: 'Customize Design',
-        tabsize: 2,
-        height: 120,
-        toolbar: [
-          ['style', ['style']],
-          ['font', ['bold', 'underline', 'clear']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['table', ['table']],
-          ['insert', ['link', 'picture', 'video']],
-          ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-      });
+        $('#summernote').summernote({
+            placeholder: 'Customize Design',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
 
     </script>
 
 
     <script>
         $(document).ready(function () {
-    $(".lead-card").on("click", function () {
-        $.ajax({
-            url: "{{ route('getLeads') }}",
-            type: "GET",
-            success: function (response) {
-                let tableBody = $("#leadsTable tbody");
-                tableBody.empty();
-                response.leads.forEach(function (lead) {
-                    tableBody.append(`
+            $(".lead-card").on("click", function () {
+                $.ajax({
+                    url: "{{ route('getLeads') }}",
+                    type: "GET",
+                    success: function (response) {
+                        let tableBody = $("#leadsTable tbody");
+                        tableBody.empty();
+                        response.leads.forEach(function (lead) {
+                            tableBody.append(`
                         <tr>
                             <td>${lead.Entrydate}</td>
                             <td>${lead.LeadName}</td>
@@ -357,15 +389,12 @@ $('#summernote').summernote({
                                 </a></td>
                         </tr>
                     `);
+                        });
+                    }
                 });
-            }
+            });
         });
-    });
-});
-        </script>
-
-
-
+    </script>
     @yield('scripts')
 </body>
 
