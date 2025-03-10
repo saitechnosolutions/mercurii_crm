@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VendorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,3 +114,12 @@ Route::view('/activities', 'pages.createactivities')->name('activities');
 // quotatu
 Route::get('/viewconverted', [Controller::class, 'viewconvert'])->name('pages.viewconverted');
 Route::get('/viewquota', [Controller::class, 'viewquota'])->name('pages.viewquotation');
+
+// vendor
+Route::get('/vendors', [VendorController::class, 'viewVendors'])->name('pages.vendor.vendorList');
+Route::get('/purchase-order', [VendorController::class, 'viewPurchaseOrder']);
+Route::view('/purchase-entry', "pages.vendor.purchaseEntry");
+Route::view('/vendor/po-invoice', "pages.vendor.po_invoice");
+Route::view('/add-vendors','pages.vendor.addVendors')->name('pages.vendor.addVendors');
+Route::view('/edit-vendors','pages.vendor.editVendors')->name('pages.vendor.editVendors');
+Route::post('/saveVendors',[VendorController::class,'saveVendors']);
