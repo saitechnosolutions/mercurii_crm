@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
@@ -28,6 +29,13 @@ class ProductController extends Controller
         // return redirect()->back()->with('success', 'User added successfully');
     }
 
+
+    public function productCategoryList()
+    {
+        $productCategory = ProductCategory::get();
+        return view('pages.masters.productCategory', compact('productCategory'));
+
+    }
 
     public function products()
     {

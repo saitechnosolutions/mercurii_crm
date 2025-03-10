@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\LoginController;
@@ -63,6 +64,13 @@ Route::post('/updateuser', [UserController::class, 'update'])->name('users.updat
 
 // productrout
 Route::get('/products', [ProductController::class, 'products'])->name('products');
+
+// product category
+Route::get('/product-categories', [ProductController::class, 'productCategoryList'])->name('product-categories');
+Route::post('/add-category-action', [ProductCategoryController::class, 'addCategoryFunction']);
+Route::post('/edit-category-action', [ProductCategoryController::class, 'editCategoryFunction']);
+Route::get('/delete-category/{catId}',[ProductCategoryController::class, 'deleteCategoryFunction']);
+
 Route::view('/addproduct','pages.productadd');
 Route::post('/addproduct', [ProductController::class, 'store'])->name('products.store');
 Route::post('/updateproduct', [ProductController::class, 'update'])->name('products.update');
