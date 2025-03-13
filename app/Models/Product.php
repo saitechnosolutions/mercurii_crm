@@ -17,12 +17,18 @@ class Product extends Model
         'partno',
         'productdes',
         'Productcategory',
+        'quantity',
     ];
 
 
     public function category()
-{
-    return $this->belongsTo(Dropdowndata::class, 'Productcategory', 'id');
-}
+    {
+        return $this->belongsTo(ProductCategory::class, 'Productcategory', 'id');
+    }
+
+    public function uomData()
+    {
+        return $this->belongsTo(UnitOfMeasurement::class, 'uom', 'id');
+    }
 
 }

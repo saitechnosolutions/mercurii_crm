@@ -104,6 +104,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 
+    <script src="/assets/js/custom.js"></script>
+
 
     <!-- Datatable init js -->
     <script src="/assets/js/pages/datatables.init.js"></script>

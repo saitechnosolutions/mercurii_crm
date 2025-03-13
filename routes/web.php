@@ -72,9 +72,13 @@ Route::post('/add-category-action', [ProductCategoryController::class, 'addCateg
 Route::post('/edit-category-action', [ProductCategoryController::class, 'editCategoryFunction']);
 Route::get('/delete-category/{catId}',[ProductCategoryController::class, 'deleteCategoryFunction']);
 
+// products routes
+
 Route::view('/addproduct','pages.productadd');
 Route::post('/addproduct', [ProductController::class, 'store'])->name('products.store');
-Route::post('/updateproduct', [ProductController::class, 'update'])->name('products.update');
+Route::get('/updateProductData/{productId}', [ProductController::class, 'updateProductData']);
+Route::post('/updateProduct', [ProductController::class, 'updateProduct'])->name('products.update');
+Route::get('/get-products/{catId}', [ProductController::class, 'getProductData']);
 
 // custmorrout
 Route::get('/customer', [CustomerController::class, 'customer'])->name('pages.customer');
@@ -142,11 +146,13 @@ Route::view('/vendorinvoice', 'quotations.vendorinvoice');
 // vendor
 Route::get('/vendors', [VendorController::class, 'viewVendors'])->name('pages.vendor.vendorList');
 Route::get('/purchase-order', [VendorController::class, 'viewPurchaseOrder']);
+Route::view('/create-po','pages.vendor.addPurchaseOrder')->name('pages.vendor.create-po');
 Route::view('/purchase-entry', "pages.vendor.purchaseEntry");
 Route::view('/vendor/po-invoice', "pages.vendor.po_invoice");
 Route::view('/add-vendors','pages.vendor.addVendors')->name('pages.vendor.addVendors');
 Route::view('/edit-vendors','pages.vendor.editVendors')->name('pages.vendor.editVendors');
-Route::post('/saveVendors',[VendorController::class,'saveVendors']);
+Route::post('/saveVendors',[VendorController::class,'saveVendors'])->name('add-vendors');
+Route::post('/save-po',[VendorController::class,'savePo']);
 
 // terms&conditions
 Route::get('/terms', [TermController::class, 'viewterms'])->name('terms.view');
@@ -156,3 +162,4 @@ Route::get('/terms/edit/{id}', [TermController::class, 'edit'])->name('terms.edi
 Route::put('/terms/update/{id}', [TermController::class, 'update'])->name('terms.update');
 Route::delete('/terms/delete/{id}', [TermController::class, 'destroy'])->name('terms.destroy');
 Route::put('/terms/approve/{id}', [TermController::class, 'approve'])->name('terms.approve');
+

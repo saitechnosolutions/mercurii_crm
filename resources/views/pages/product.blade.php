@@ -11,10 +11,9 @@
                         <h5 class="mt-2 mb-4">Products</h5>
                     </div>
                     <div class="col-lg-6" style="text-align: end;">
-                        <a  href="/addproduct" class="btn btn-primary  waves-effect waves-light"
-                                        >
-                                        <i class="mdi mdi-plus"></i> Add Product
-                    </a>
+                        <a href="/addproduct" class="btn btn-primary  waves-effect waves-light">
+                            <i class="mdi mdi-plus"></i> Add Product
+                        </a>
                     </div>
                 </div>
             </div>
@@ -24,46 +23,41 @@
                         <tr>
                             <th style="text-align: center;">S.No</th>
                             <th style="text-align: center;">Part No</th>
+                            <th style="text-align: center;">HSN</th>
                             <th style="text-align: center;">Product Category</th>
                             <th style="text-align: center;">Product Name</th>
                             <th style="text-align: center;">Rate</th>
-                            <th style="text-align: center;">HSN</th>
-                            <th style="text-align: center;">UOM</th>
-                            <th style="text-align: center;">GST</th>
+                            <th style="text-align: center;">Qty</th>
                             <th style="text-align: center;">Action</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @php
-                            $i = 1;
-                            $sd = App\Models\Product::all();
-                        @endphp --}}
 
-@php $i = 1; @endphp
+                        @php $i = 1; @endphp
 
-@foreach ($products as $s)
-    <tr style="text-align: center;">
-        <td>{{ $i++ }}</td>
-        <td>{{ $s->partno ?? '-' }}</td>
-        <td>{{ $s->category->dropdowndata ?? '-' }}</td> {{-- Uses eager loading --}}
-        <td>{{ $s->productname }}</td>
-        <td>{{ $s->rate }}</td>
-        <td>{{ $s->hsn }}</td>
-        <td>{{ $s->uom ?? '-' }}</td>
-        <td>{{ $s->gst }}</td>
-        <td>
-            <div class="buttons_td">
-                <button type="button" class="btn btn-bull_yellow edit-btn waves-effect waves-light"
-                data-bs-toggle="modal" data-bs-target=".bs-example-modal-center"
-                data-id="{{ $s->id }}" data-productname="{{ $s->productname }}"  data-rate="{{ $s->rate }}" data-hsn="{{ $s->hsn }}" data-gst="{{ $s->gst }}" >
-                <i class="mdi mdi-lead-pencil"></i>
-            </button>
-            </div>
+                        @foreach ($products as $data)
 
-        </td>
-    </tr>
-@endforeach
+                            <tr style="text-align: center;">
+                                <td>{{ $i++ }}</td>
+                                <td>{{ $data->partno ?? '-' }}</td>
+                                <td>{{ $data->hsn }}</td>
+                                <td>{{ $data->category->category_name ?? '-' }}</td>
+                                <td>{{ $data->productname }}</td>
+                                <td>₹{{ $data->rate }}</td>
+                                <td>
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="">{{ $data->quantity }}</span>
+                                </td>
+                                <td>
+                                    <div class="buttons_td">
+                                        <a href="/updateProductData/{{ $data->id }}"><button type="button" class="btn btn-bull_yellow edit-btn waves-effect waves-light">
+                                            <i class="mdi mdi-lead-pencil"></i>
+                                        </button></a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        @endforeach
 
 
 
@@ -106,9 +100,9 @@
                     </div>
                 </form>
 
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
 
 
     <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-hidden="true">
@@ -118,40 +112,36 @@
                     <h5 class="modal-title">Edit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                        <form method="POST" action="{{ route('products.update') }}">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="form-group mb-2">
-                                    <input type="hidden" class="id" name="id">
-                                    <label for="" class="form-label">Product Name <span class="mandatory">*</span></label>
-                                    <input type="text" class="form-control productname" placeholder="Productname" name="productname" required>
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label class="form-label">Rate <span class="mandatory">*</span></label>
-                                <input type="text" class="form-control rate" name="rate"
-                                    placeholder="Rate" required>
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label for="input4" class="form-label">HSN <span
-                                        class="mandatory">*</span></label>
-                                <input type="text" class="form-control hsn" name="hsn" placeholder="HSN"
-                                    required>
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label for="input4" class="form-label">GST <span
-                                        class="mandatory">*</span></label>
-                                <input type="text" class="form-control gst" name="gst" placeholder="GST"
-                                    required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
-                            </div>
-                        </form>
+                <form method="POST" action="{{ route('products.update') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group mb-2">
+                            <input type="hidden" class="id" name="id">
+                            <label for="" class="form-label">Product Name <span class="mandatory">*</span></label>
+                            <input type="text" class="form-control productname" placeholder="Productname" name="productname"
+                                required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="form-label">Rate <span class="mandatory">*</span></label>
+                            <input type="text" class="form-control rate" name="rate" placeholder="Rate" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="input4" class="form-label">HSN <span class="mandatory">*</span></label>
+                            <input type="text" class="form-control hsn" name="hsn" placeholder="HSN" required>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="input4" class="form-label">GST <span class="mandatory">*</span></label>
+                            <input type="text" class="form-control gst" name="gst" placeholder="GST" required>
+                        </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
 
 
 
@@ -162,7 +152,7 @@
 @section('scripts')
     <script src="/assets/js/pages/pass-addon.init.js"></script>
     <script>
-        $('.country').on('change', function() {
+        $('.country').on('change', function () {
             var country = $(this).val();
 
             $('.state').empty();
@@ -170,7 +160,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/GetState/' + country,
-                success: function(response) {
+                success: function (response) {
                     $('.state').empty();
                     $('.state').append(
                         `<option value="" disabled selected>Select State</option>`
@@ -184,7 +174,7 @@
             })
         });
 
-        $('.state').on('change', function() {
+        $('.state').on('change', function () {
             var state = $(this).val();
 
             $('.district').empty();
@@ -192,7 +182,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/Getdistrict/' + state,
-                success: function(response) {
+                success: function (response) {
                     $('.district').empty();
                     $('.district').append(
                         `<option value="" disabled selected>Select District</option>`
@@ -208,8 +198,8 @@
     </script>
 
     <script>
-        $(document).ready(function() {
-            $('.confirmpassword').on('keyup', function() {
+        $(document).ready(function () {
+            $('.confirmpassword').on('keyup', function () {
                 const password = $('.password').val();
                 const confirmPassword = $('.confirmpassword').val();
                 const errorMsg = $('.confpassword-error');
@@ -227,38 +217,36 @@
                 }
             });
 
-            $('.password').on('keyup', function() {
+            $('.password').on('keyup', function () {
                 $('.confpassword-error').text('');
                 $('.add-employee-btn').attr('type', 'button'); // Reset to button on typing in password
             });
         });
     </script>
 
-<script>
-    $(document).on('click', '.edit-btn', function() {
-        var id = $(this).data('id');
-        var productname = $(this).data('productname');
-        var gst = $(this).data('gst');
-        var hsn = $(this).data('hsn');
-        var rate = $(this).data('rate');
+    <script>
+        $(document).on('click', '.edit-btn', function () {
+            var id = $(this).data('id');
+            var productname = $(this).data('productname');
+            var gst = $(this).data('gst');
+            var hsn = $(this).data('hsn');
+            var rate = $(this).data('rate');
 
 
-        $('.id').val(id);
-        $('.productname').val(productname);
-        $('.hsn').val(hsn);
-        $('.gst').val(gst);
-        $('.rate').val(rate);
-    });
-</script>
+            $('.id').val(id);
+            $('.productname').val(productname);
+            $('.hsn').val(hsn);
+            $('.gst').val(gst);
+            $('.rate').val(rate);
+        });
+    </script>
 
-<script>
-    $(document).on('click', '.pass_edit', function() {
-        var id = $(this).data('id');
+    <script>
+        $(document).on('click', '.pass_edit', function () {
+            var id = $(this).data('id');
 
-        $('.id').val(id);
-    })
-</script>
+            $('.id').val(id);
+        })
+    </script>
 
 @endsection
-
-
