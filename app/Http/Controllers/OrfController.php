@@ -96,6 +96,7 @@ public function updatecsStatusorf(Request $request)
     if ($lead) {
         // Update lead details
         $lead->cs_status = $request->cs_status ?? $lead->cs_status;
+        $lead->dispatchdate = $request->dispatchdate;
         $lead->approval_status = $request->appsta ?? $lead->approval_status;
         $lead->save();
 

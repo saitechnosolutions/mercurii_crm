@@ -18,6 +18,7 @@ use App\Models\LeadDesign;
 use App\Models\LeadProduct;
 use App\Models\Quotation;
 use App\Models\QuotationProduct;
+use App\Models\Term;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -295,6 +296,25 @@ class Controller extends BaseController
     ]);
 }
 
+public function shifandfreports(Request $request)
+{
+    $state_id = $request->input('state_id');  // Make sure the variable matches the one from AJAX
+
+    // Fetch districts based on state_id
+    $districts = DB::table('city_list')->where('state_code', $state_id)
+        ->select('id', 'city_name')->get();
+
+    // Build the HTML for the city options
+    $districtOptions = '<option value="">-- Choose City --</option>';
+    foreach ($districts as $district) {
+        $districtOptions .= "<option value='" . $district->id . "'>" . $district->city_name . "</option>";
+    }
+
+    return response()->json([
+        'shcitylist' => $districtOptions  // Return the options as a response
+    ]);
+}
+
 public function getfandfrepor(Request $request)
 {
     $state = $request->input('state');  // Make sure the variable matches the one from AJAX
@@ -337,65 +357,69 @@ public function getfandfrep(Request $request)
 
 public function storedesign(Request $request)
 {
-    // $request->validate([
-    //     'leadiid' => 'required|exists:leads,id',
-    //     'catename' => 'required|string|max:255',
-    //     'proname' => 'required|string|max:255',
-    //     'design' => 'required',
-    // ]);
     $request->validate([
-        'document' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048', // Allow specific file types
+        'drawing.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'offer.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
     ]);
-    $data = $request->all();
-    $filePath = null;
 
-    if ($request->hasFile('document')) {
-        $file = $request->file('document');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $destinationPath = public_path('assets/images/');
-        $file->move($destinationPath, $filename);
-        $filePath = 'assets/images/' . $filename;
-        $data['document'] = $filePath;
+    $commonData = [
+        'leadiid' => $request->leadiid,
+        'catename' => $request->catename,
+        'proname' => $request->proname,
+        'design' => $request->design,
+        'assignee' => auth()->id(),
+        'reverse' => (auth()->id() == ($request->assigneeto ?? null)) ? 1 : 0,
+    ];
+
+    $drawingFiles = $request->file('drawing');
+    $offerFiles = $request->file('offer');
+    $basicsupplies = $request->basicsupply;
+
+    // If basicsupply is provided (Design Login)
+    if ($basicsupplies && is_array($basicsupplies)) {
+        foreach ($basicsupplies as $index => $basicsupply) {
+            $data = $commonData;
+
+            // Handle Drawing File
+            if (isset($drawingFiles[$index])) {
+                $drawingFile = $drawingFiles[$index];
+                $drawingFilename = time() . '_drawing_' . $drawingFile->getClientOriginalName();
+                $drawingFile->move(public_path('assets/images/'), $drawingFilename);
+                $data['drawing'] = 'assets/images/' . $drawingFilename;
+            }
+
+            // Handle Offer File
+            if (isset($offerFiles[$index])) {
+                $offerFile = $offerFiles[$index];
+                $offerFilename = time() . '_offer_' . $offerFile->getClientOriginalName();
+                $offerFile->move(public_path('assets/images/'), $offerFilename);
+                $data['offer'] = 'assets/images/' . $offerFilename;
+            }
+
+            // Assign Other Inputs
+            $data['basicsupply'] = $basicsupply;
+            $data['freightvalue'] = $request->freightvalue[$index] ?? null;
+            $data['installvalue'] = $request->installvalue[$index] ?? null;
+            $data['pricevalue'] = $request->pricevalue[$index] ?? null;
+
+            LeadDesign::create($data);
+        }
     }
-    if ($request->hasFile('drawing')) {
-        $file = $request->file('drawing');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $destinationPath = public_path('assets/images/');
-        $file->move($destinationPath, $filename);
-        $filePath = 'assets/images/' . $filename;
-        $data['drawing'] = $filePath;
+    // If only GA Drawing is provided (Non-Design Login)
+    elseif ($drawingFiles) {
+        foreach ($drawingFiles as $index => $drawingFile) {
+            $data = $commonData;
+            $drawingFilename = time() . '_drawing_' . $drawingFile->getClientOriginalName();
+            $drawingFile->move(public_path('assets/images/'), $drawingFilename);
+            $data['drawing'] = 'assets/images/' . $drawingFilename;
+
+            LeadDesign::create($data);
+        }
     }
-    if ($request->hasFile('offer')) {
-        $file = $request->file('offer');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $destinationPath = public_path('assets/images/');
-        $file->move($destinationPath, $filename);
-        $filePath = 'assets/images/' . $filename;
-        $data['offer'] = $filePath;
-    }
-    $data['assignee'] = auth()->id();
-    $data['reverse'] = ($data['assignee'] == ($data['assigneeto'] ?? null)) ? 1 : 0;
-    // if ($request->hasFile('document')) {
-    //     $file = $request->file('document');
-    //     $filename = time() . '_' . $file->getClientOriginalName(); // Unique filename
-    //     $destinationPath = public_path('assets/images/'); // Define the storage path
 
-    //     // Move the file to public/assets/images/
-    //     $file->move($destinationPath, $filename);
-
-    //     // Save the file path relative to the public folder
-    //     $data['document'] = 'assets/images/' . $filename;
-    // }
-
-    LeadDesign::create($data);
-    // Mail::to('allwyns.sts@gmail.com') // Replace with actual admin email
-    // ->cc('nvikram.sts@gmail.com') // Assigned designer email
-    // ->send(new DesignUploadedMail($data, $filePath));
-
-    return redirect()->back()->with('success', 'Design saved successfully and email sent!');
-
-    // return redirect()->back()->with('success', 'Design saved successfully!');
+    return redirect()->back()->with('success', 'Designs saved successfully!');
 }
+
 
 
 // public function updateStatusdf(Request $request)
@@ -601,48 +625,131 @@ try {
 
 }
 
+// public function createestimate(Request $request)
+// {
+//     $quotationProduct = QuotationProduct::create([
+//         'leadno' => $request->leadno,
+//         'quotationno' => $request->quotationno,
+//         'cliname' => $request->clientname,
+//         'placeofsupply' => $request->placeofsupply,
+//         'gstnum' => $request->gstnum,
+//         'catepro' => $request->catepro,
+//         'product' => $request->product,
+//         'part_no' => $request->part_no,
+//         'quanty' => $request->quanty,
+//         'allowdis' => $request->allowdis,
+//         'requestdis' => $request->requestdis,
+//         'ratee' => $request->ratee,
+//         'price' => $request->price,
+//         'priceamt' => $request->priceamt,
+//         'lbt' => $request->lbt,
+//         'tax' => $request->tax,
+//         'taxamt' => $request->taxamt,
+//         'grandtotal' => $request->grandtotal,
+//     ]);
+
+//     Freight::create([
+//         'leadnumber' => $request->leadno,
+//         'quotationno' => $request->quotationno,
+//         'termscondition' => $request->termscondition,
+//         'dov' => $request->dov,
+//         'freight' => $request->freight,
+//         'exwork' => $request->exwork,
+//         'freightextra' => $request->freightextra,
+//         'unloading' => $request->unloading,
+//         'remarks' => $request->remarks,
+//         'currency' => $request->currency,
+//         'warranty' => $request->warranty,
+//         'installation' => $request->installation,
+//         'agent' => $request->agent,
+//         'amount' => $request->ammt,
+//     ]);
+
+//     return redirect()->route('single.quota', ['leadid' => $quotationProduct->leadno])
+//                      ->with('success', 'Estimate created successfully!');
+// }
+
 public function createestimate(Request $request)
 {
-    $quotationProduct = QuotationProduct::create([
-        'leadno' => $request->leadno,
-        'quotationno' => $request->quotationno,
-        'cliname' => $request->clientname,
-        'placeofsupply' => $request->placeofsupply,
-        'gstnum' => $request->gstnum,
-        'catepro' => $request->catepro,
-        'product' => $request->product,
-        'part_no' => $request->part_no,
-        'quanty' => $request->quanty,
-        'allowdis' => $request->allowdis,
-        'requestdis' => $request->requestdis,
-        'ratee' => $request->ratee,
-        'price' => $request->price,
-        'priceamt' => $request->priceamt,
-        'lbt' => $request->lbt,
-        'tax' => $request->tax,
-        'taxamt' => $request->taxamt,
-        'grandtotal' => $request->grandtotal,
-    ]);
+    DB::beginTransaction();
 
-    Freight::create([
-        'leadnumber' => $request->leadno,
-        'quotationno' => $request->quotationno,
-        'termscondition' => $request->termscondition,
-        'dov' => $request->dov,
-        'freight' => $request->freight,
-        'exwork' => $request->exwork,
-        'freightextra' => $request->freightextra,
-        'unloading' => $request->unloading,
-        'remarks' => $request->remarks,
-        'currency' => $request->currency,
-        'warranty' => $request->warranty,
-        'installation' => $request->installation,
-        'agent' => $request->agent,
-        'amount' => $request->ammt,
-    ]);
+    try {
+        // Insert into QuotationProduct
+        $quotationProduct = QuotationProduct::create([
+            'leadno' => $request->leadno,
+            'quotationno' => $request->quotationno,
+            'cliname' => $request->clientname,
+            'placeofsupply' => $request->placeofsupply,
+            'shippingcountry' => $request->shippingcountry,
+            'shistate_id' => $request->shistate_id,
+            'shippostalcode' => $request->shippostalcode,
+            'shcitylist' => $request->shcitylist,
+            'gstnum' => $request->gstnum,
+            'catepro' => $request->catepro,
+            'product' => $request->product,
+            'part_no' => $request->part_no,
+            'quanty' => $request->quanty,
+            'allowdis' => $request->allowdis,
+            'requestdis' => $request->requestdis,
+            'ratee' => $request->ratee,
+            'price' => $request->price,
+            'priceamt' => $request->priceamt,
+            'lbt' => $request->lbt,
+            'tax' => $request->tax,
+            'taxamt' => $request->taxamt,
+            'grandtotal' => $request->grandtotal,
+        ]);
 
-    return redirect()->route('single.quota', ['leadid' => $quotationProduct->leadno])
-                     ->with('success', 'Estimate created successfully!');
+        // Handle Terms Condition
+        if ($request->termscondition === 'new' && $request->newtermscondition) {
+            $term = Term::create([
+                'content' => $request->newtermscondition,
+                'termtype' => 1, // 1 for Terms & Conditions
+                'term_approve' => 1,
+            ]);
+            $termsConditionId = $term->id;
+        } else {
+            $termsConditionId = $request->termscondition;
+        }
+
+        // Handle Warranty Condition
+        if ($request->warranty === 'new' && $request->newwarcondition) {
+            $warrantyTerm = Term::create([
+                'content' => $request->newwarcondition,
+                'termtype' => 2, // 2 for Warranty Terms
+                'term_approve' => 1,
+            ]);
+            $warrantyId = $warrantyTerm->id;
+        } else {
+            $warrantyId = $request->warranty;
+        }
+
+        // Insert into Freight
+        Freight::create([
+            'leadnumber' => $request->leadno,
+            'quotationno' => $quotationProduct->id,
+            'termscondition' => $termsConditionId,
+            'dov' => $request->dov,
+            'freight' => $request->freight,
+            'exwork' => $request->exwork,
+            'freightextra' => $request->freightextra,
+            'unloading' => $request->unloading,
+            'remarks' => $request->remarks,
+            'currency' => $request->currency,
+            'warranty' => $warrantyId,
+            'installation' => $request->installation,
+            'agent' => $request->agent,
+            'amount' => $request->ammt,
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('single.quota', ['leadid' => $quotationProduct->leadno])
+                         ->with('success', 'Estimate created successfully!');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back()->with('error', 'An error occurred: ' . $e->getMessage());
+    }
 }
 
 public function generatePDF($id)

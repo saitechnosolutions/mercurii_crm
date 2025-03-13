@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrfController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TermController;
 use App\Http\Controllers\VendorController;
 
 /*
@@ -107,6 +108,7 @@ Route::post('/createestimate', [Controller::class, 'createestimate'])->name('cre
 Route::get('/quotation-pdf/{id}', [Controller::class, 'generatePDF'])->name('quotation.pdf');
 Route::get('/quotation/view/{id}', [Controller::class, 'viewQuotation'])->name('quotation.view');
 Route::view('/quopdf2','quotations.pdf2');
+Route::post('/shifandfreports', [Controller::class,'shifandfreports']);
 // orf
 Route::get('/orf/{id}',[Controller::class, 'createorf'])->name('createorf');
 Route::post('/store-orf', [OrfController::class, 'store'])->name('orf.store');
@@ -137,3 +139,12 @@ Route::view('/vendor/po-invoice', "pages.vendor.po_invoice");
 Route::view('/add-vendors','pages.vendor.addVendors')->name('pages.vendor.addVendors');
 Route::view('/edit-vendors','pages.vendor.editVendors')->name('pages.vendor.editVendors');
 Route::post('/saveVendors',[VendorController::class,'saveVendors']);
+
+// terms&conditions
+Route::get('/terms', [TermController::class, 'viewterms'])->name('terms.view');
+Route::view('/addterms','pages.addterms')->name('pages.addterms');
+Route::post('/saveterms', [TermController::class, 'store'])->name('terms.store');
+Route::get('/terms/edit/{id}', [TermController::class, 'edit'])->name('terms.edit');
+Route::put('/terms/update/{id}', [TermController::class, 'update'])->name('terms.update');
+Route::delete('/terms/delete/{id}', [TermController::class, 'destroy'])->name('terms.destroy');
+Route::put('/terms/approve/{id}', [TermController::class, 'approve'])->name('terms.approve');

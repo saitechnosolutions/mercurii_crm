@@ -75,7 +75,7 @@
                         <input type="hidden" id="orfidcs" name="orfid">
                         <input type="hidden" id="appsta" name="appsta">
 
-                            <div class="form-group mt-4 mb-3">
+                            <div class="form-group mt-4 ">
                                 <label for="exampleFormControlInput1"
                                     class="form-label">Approval Proceed <span
                                     style="color:red">*</span></label>
@@ -84,6 +84,12 @@
                                         <option value="1"> Yes </option>
 
                                     </select>
+                            </div>
+                            <div class="form-group mt-4 mb-3">
+                                <label for="exampleFormControlInput1"
+                                    class="form-label">Dispatch Date<span
+                                    style="color:red">*</span></label>
+                                    <input type="date" name="dispatchdate" class="form-control" style="" placeholder=""    >
                             </div>
 
                         <button type="submit" class="btn btn-primary">Update Status</button>

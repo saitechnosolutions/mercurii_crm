@@ -12,7 +12,7 @@ class QuotationProduct extends Model
     protected $table = 'quotationproduct';
 
     protected $fillable = [
-        'quotationno', 'leadno', 'grandtotal', 'cliname', 'placeofsupply', 'gstnum',
+        'quotationno', 'leadno', 'grandtotal', 'cliname', 'placeofsupply', 'shippostalcode', 'shcitylist', 'shistate_id', 'shippingcountry','gstnum',
         'catepro', 'product', 'part_no', 'quanty', 'allowdis',
         'requestdis', 'ratee', 'price', 'priceamt', 'lbt', 'tax', 'taxamt'
     ];
@@ -26,5 +26,10 @@ class QuotationProduct extends Model
     {
         return $this->belongsTo(Product::class, 'product', 'id');
     }
+
+    public function freight()
+{
+    return $this->hasOne(Freight::class, 'quotationno', 'quotationno');
+}
 
 }

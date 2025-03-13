@@ -87,6 +87,47 @@
             margin-top: 10px;
             font-size: 12px;
         }
+        .page-break {
+            page-break-before: always;
+        }
+        .terms-conditions {
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: #F1F1F1;
+            height: 90vh;
+        }
+        .terms-conditions h3 {
+            background-color: #1b5583;
+            color: white;
+            padding: 10px;
+        }
+        .terms-conditions p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        .upload-section {
+            height: 90vh;
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: #F1F1F1;
+        }
+        .upload-section h3 {
+            background-color: #1b5583;
+            color: white;
+            padding: 10px;
+        }
+        .uploaded-file {
+            margin-top: 15px;
+        }
+        iframe, embed {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #ccc;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -265,5 +306,54 @@
         </div>
 
     </div>
+    </div>
+
+    <div class="page-break"></div>
+    <div class="container terms-conditions">
+        <h3>Terms and Conditions</h3>
+        <p>1. Payment is due within 30 days from the invoice date.</p>
+        <p>2. All products remain the property of the company until full payment is received.</p>
+        <p>3. Any discrepancies must be reported within 7 days of delivery.</p>
+        <p>4. Late payments may incur additional charges.</p>
+        <p>5. All returns are subject to prior approval and a restocking fee.</p>
+    </div>
+    <div class="footer-text">
+        If you have any questions about this purchase order, please contact <br>
+        [Name, Phone #, Email]
+    </div>
+    <div class="page-break"></div>
+    <div class="container upload-section">
+        <h3>Uploaded Documents / Images</h3>
+
+        <!-- For Images -->
+        <div class="uploaded-file">
+            <strong>Image Upload:</strong><br>
+            <img src="assets/uploads/sample-image.jpg" alt="Uploaded Image">
+        </div>
+
+        <!-- For PDF Files -->
+        <div class="uploaded-file">
+            <strong>PDF Upload:</strong><br>
+            <iframe src="/assets/images/1740635578_attcuspo_MERCURI.PDF#toolbar=0&navpanes=0&scrollbar=0"
+            frameborder="0"
+            style="width: 100%; height: 600px;"></iframe>
+        </div>
+
+        <!-- For Word Documents -->
+        <div class="uploaded-file">
+            <strong>Word Document Upload:</strong><br>
+            <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=http://127.0.0.1:8000/assets/images/1741866198_drawing_Square%20Tech%20Interio%20intro.docx"
+            frameborder="0"
+            style="width: 100%; height: 600px;">
+        </iframe>
+        </div>
+
+    </div>
+
+    <div class="footer-text">
+        If you have any questions about this purchase order, please contact <br>
+        [Name, Phone #, Email]
+    </div>
+
 </body>
 </html>

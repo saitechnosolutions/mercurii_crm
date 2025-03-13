@@ -26,4 +26,15 @@ class Freight extends Model
         'agent',
         'amount',
     ];
+
+    public function termsCondition()
+{
+    return $this->belongsTo(Term::class, 'termscondition');
+}
+
+public function warrantyTerm()
+{
+    return $this->belongsTo(Term::class, 'warranty');
+}
+
 }

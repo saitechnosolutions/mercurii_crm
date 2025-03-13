@@ -22,7 +22,10 @@ class LeadDesign extends Model
         'reverse',
         'offer',
         'drawing',
-        'pricevalue'
+        'pricevalue',
+        'basicsupply',
+        'freightvalue',
+         'installvalue'
     ];
 
     public function lead()

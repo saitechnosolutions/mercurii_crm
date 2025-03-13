@@ -382,38 +382,60 @@
                                 <div class="col-lg-12 mt-2 justify-content-center">
                                     <div class="form-group">
                                         <textarea name="design" id="summernote" class="summernote"></textarea>
-                                        {{-- <div ></div> --}}
+
 
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mt-2">
-                                    <div class="form-group">
-                                        <label for="document" class="form-label">Design Document / File</label>
-                                        <input type="file" class="form-control" name="document" id="document">
+
+                                <div id="dynamic-fields">
+                                    <div class="row field-group">
+                                        @if (Auth::user()->role == 'Design')
+                                        <div class="col-lg-10 mt-2">
+                                        </div>
+
+                                        <div class="col-lg-1 mt-2">
+
+                                        </div>
+                                        <div class="col-lg-1 mt-2">
+                                            <button type="button" class="btn btn-success add-more">+</button>
+                                        </div>
+                                        @endif
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">GA Drawing</label>
+                                            <input type="file" class="form-control" name="drawing[]">
+                                        </div>
+                                        @if (Auth::user()->role == 'Design')
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">Offer</label>
+                                            <input type="file" class="form-control" name="offer[]">
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">Basic Supply</label>
+                                            <input type="text" class="form-control basicsupply" name="basicsupply[]" placeholder="" min="0" step="any" required>
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">Freight/Transportation</label>
+                                            <input type="text" class="form-control freightvalue" name="freightvalue[]" placeholder="" min="0" step="any" required>
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">Installation</label>
+                                            <input type="text" class="form-control installvalue" name="installvalue[]" placeholder="" min="0" step="any" required>
+                                        </div>
+                                        <div class="col-lg-3 mt-2">
+                                            <label for="document" class="form-label">Price Value</label>
+                                            <input type="text" class="form-control pricevalue" name="pricevalue[]" placeholder="">
+                                        </div>
+                                        <div class="col-lg-11 mt-2">
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mt-2">
-                                </div>
-                                @if (Auth::user()->role == 'Design')
-                                <div class="col-lg-4 mt-2">
-                                    <div class="form-group">
-                                        <label for="document" class="form-label">Offer</label>
-                                        <input type="file" class="form-control" name="offer" id="document1">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 mt-2">
-                                    <div class="form-group">
-                                        <label for="document" class="form-label">Drawing</label>
-                                        <input type="file" class="form-control" name="drawing" id="document2">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 mt-2">
-                                    <div class="form-group">
-                                        <label for="document" class="form-label">Value</label>
-                                        <input type="text" class="form-control" name="pricevalue" >
-                                    </div>
-                                </div>
-                                @endif
+
+
                                 <div class="col-lg-10 mt-2">
                                 </div>
                                 <div class="col-lg-2 mt-2 justify-content-center">
@@ -424,8 +446,7 @@
                                             style="color:#fff;">Add</button>
                                     </div>
                                 </div>
-                                {{-- <div class="col-lg-4 mt-2">
-                                </div> --}}
+
 
                             </div>
                         </div>
@@ -456,10 +477,22 @@
                        {{ $de->pricevalue }}
                     </a>
                 @endif
+                @if($de->pricevalue)
+    <div class="dropdown d-inline-block">
+        <button class="btn btn-info p-2 dropdown-toggle" type="button" id="priceDropdown{{ $de->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+            View Breakdown
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="priceDropdown{{ $de->id }}">
+            <li><a class="dropdown-item" href="#">Basic Supply: {{ $de->basicsupply ?? 'N/A' }}</a></li>
+            <li><a class="dropdown-item" href="#">Freight Value: {{ $de->freightvalue ?? 'N/A' }}</a></li>
+            <li><a class="dropdown-item" href="#">Installation Value: {{ $de->installvalue ?? 'N/A' }}</a></li>
+        </ul>
+    </div>
+@endif
 
-                                    <a class="btn btn-success p-2" target="_blank" href="{{ asset($de->document) }}"
+                                    {{-- <a class="btn btn-success p-2" target="_blank" href="{{ asset($de->document) }}"
                                         download ><i class="fa fa-download"
-                                            aria-hidden="true"></i> Design</a>
+                                            aria-hidden="true"></i> Design</a> --}}
                                             @if(auth()->id() == $de->assignee)
                                 <button class="btn text-primary notesedit p-2"
                                     data-id="" data-bs-toggle="modal" data-bs-target="#leadeditModal"><i class="mdi mdi-lead-pencil"
@@ -470,7 +503,7 @@
                                         @endif
                             </div>
                             <p>{!! $de->design !!}</p>
-                            <span style="background-color:#00CFF4">{{ \DB::table('users')->where('id', $de->assignee)->value('name') ?? 'Unknown' }}</span>
+                            <span style="background-color:{{ $de->reverse == 1 ? '#ff6501' : '#1b5683' }};">{{ \DB::table('users')->where('id', $de->assignee)->value('name') ?? 'Unknown' }}</span>
 
                                 {{-- <span style="background-color:#fbbd54">leadid</span>
 
@@ -503,19 +536,47 @@
                                 </a>
                             </div>
                             @php
+
                             $estimates = App\Models\QuotationProduct::where('leadno', $lead->id)
                                         ->orderBy('id', 'DESC')
                                         ->get();
 
-                            $i = count($estimates); // Start numbering from the oldest (reverse order)
+                            $i = count($estimates);
                             $lastQuotationId = $estimates->first()->id ?? null;
                         @endphp
 
+
+
                         @if($estimates->isNotEmpty())
                             @foreach ($estimates as $e)
+                            @php
+                            // Fetch the related freight record
+                            $freight = App\Models\Freight::where('quotationno', $e->id)->first();
+
+                            // Check for term approval
+                            $isApproved = false;
+                            if ($freight) {
+                                $isApproved = App\Models\Term::where(function($query) use ($freight) {
+                                    $query->where('id', $freight->termscondition)
+                                          ->orWhere('id', $freight->warranty);
+                                })
+                                ->where('term_approve', 1)
+                                ->exists();
+                            }
+                        @endphp
                                 <div class="col-lg-3 mt-3">
+
                                     <div class="bg-white estimatecreate">
+                                        @if($e->id != $lastQuotationId)
+                                        <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Revision" class="badge bg-danger ms-1">R</span>
+                                    @endif
+                                    @if($isApproved)
+                    <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Terms Approval Pending" class="badge bg-info ms-1">AP</span>
+                @endif
+
                                         <div class="es text-center">
+
+
                                             <i class="mdi mdi-file-document" style="color:#fe6600;font-size:45px" aria-hidden="true"></i>
                                             <p class=" text-dark mb-0">{{ $e->quotationno }}({{ $i-- }})</p>
                                             <p class="text-dark">₹ {{ $e->grandtotal }}</p>

@@ -32,7 +32,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet" />
 
-    
+
 
 </head>
 
@@ -156,6 +156,14 @@
                 if (customerName === 'new') {
                     $('#newCustomerName').show().prop('required', true);
                     $('#contactName').val(''); // Clear the input fields
+                    $('#postalcode').val('');
+                    $('#address').val('');
+                    $('#contact_no').val('');
+                    $('#cus_email').val('');
+                    $('#ggst').val('');
+                    $('#country').val('').change();
+                    $('#country_code').val('').change();
+                    $('#state_list').val('').change();
                 } else {
                     $('#newCustomerName').hide().prop('required', false);
 
@@ -213,7 +221,7 @@
             }
 
             $(document).on("change",'.state_list',function(){
-                
+
                 fetchCitiesVendor($(this).val());
             });
 
@@ -240,6 +248,88 @@
         });
 
     </script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2 for searchable dropdown
+            $('#termSelect').select2({
+                placeholder: 'Search or Select Term',
+                allowClear: true
+            });
+
+            // Handle term selection change
+            $('#termSelect').change(function () {
+                const selectedValue = $(this).val();
+
+                if (selectedValue === 'new') {
+                    // Show new term content input
+                    $('#newTermContent').show().prop('required', true);
+                    $('#termDetails').val(''); // Clear term details field if any
+                } else {
+                    // Hide new term input field
+                    $('#newTermContent').hide().prop('required', false);
+
+                    // Fetch existing term data based on selected ID
+                    const termId = $(this).find(':selected').data('id');
+                    if (termId) {
+                        $.ajax({
+                            url: '/get-term-data/' + termId,
+                            method: 'GET',
+                            success: function (data) {
+                                if (data) {
+                                    // Populate the content if required
+                                    $('#termDetails').val(data.content);
+                                }
+                            },
+                            error: function () {
+                                alert('Unable to fetch term data.');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+   <script>
+    $(document).ready(function () {
+        // Initialize Select2 for searchable dropdown
+        $('#warrantySelect').select2({
+            placeholder: 'Search or Select Warranty Term',
+            allowClear: true
+        });
+
+        // Handle term selection change
+        $('#warrantySelect').change(function () {
+            const selectedValue = $(this).val();
+
+            if (selectedValue === 'new') {
+                // Show new term content input
+                $('#newwarContent').show().prop('required', true);
+                $('#warranDetails').val(''); // Clear term details field if any
+            } else {
+                // Hide new term input field
+                $('#newwarContent').hide().prop('required', false);
+
+                // Fetch existing term data based on selected ID
+                const termId = $(this).find(':selected').data('id');
+                if (termId) {
+                    $.ajax({
+                        url: '/get-term-data/' + termId,
+                        method: 'GET',
+                        success: function (data) {
+                            if (data) {
+                                // Populate the content if required
+                                $('#warranDetails').val(data.content);
+                            }
+                        },
+                        error: function () {
+                            alert('Unable to fetch term data.');
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>
 
 <script>
     var updatellStatusUrl = "{{ route('lead.updateStatusdf') }}"; // Laravel will process this

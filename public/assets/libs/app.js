@@ -7305,6 +7305,33 @@ $(document).ready(function () {
 });
 
 
+$(document).ready(function () {
+    $('#state_listsh').on('change', function () {
+        var state_id = $(this).val();  // Use 'state_id' instead of 'company_id'
+
+        // Retrieve CSRF token from the meta tag
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        if (state_id) {
+            $.ajax({
+                type: 'POST',
+                url: '/shifandfreports',
+                data: {
+                    state_id: state_id  // Make sure to send 'state_id'
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function (data) {
+                    $('[name="shcitylist"]').html(data.shcitylist);
+                }
+            });
+        } else {
+            $('[name="shcitylist"]').html('<option value="">-- Choose City --</option>');
+        }
+    });
+});
+
 
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('.edit-btnb').forEach(button => {
@@ -7474,3 +7501,130 @@ $(document).ready(function () {
         document.querySelector("[name='requestdis']").addEventListener("keyup", calculateValues);
         document.querySelector("[name='allowdis']").addEventListener("keyup", calculateValues);
     });
+
+
+
+    // function copyAddress() {
+    //     const billingAddress = document.getElementById('billingAddress').value;
+    //     document.getElementById('shippingAddress').value = billingAddress;
+    // }
+
+    function copyAddress() {
+        // Copy address
+        const billingAddress = document.getElementById('billingAddress').value;
+        document.getElementById('shippingAddress').value = billingAddress;
+
+        // Copy country
+        const billingCountry = document.getElementById('country').value;
+        document.getElementById('shipcountry').value = billingCountry;
+
+        // Copy state
+        const billingState = document.getElementById('state_list').value;
+        document.getElementById('state_listsh').value = billingState;
+
+        // Trigger change to load the corresponding cities dynamically
+        $('#state_listsh').trigger('change');
+
+        // Copy city after slight delay to ensure cities are loaded
+        setTimeout(() => {
+            const billingCity = document.getElementById('city_list').value;
+            document.getElementById('shicity_list').value = billingCity;
+        }, 500);
+
+        // Copy postal code
+        const billingPostalCode = document.getElementById('postalcode').value;
+        document.getElementById('shippostalcode').value = billingPostalCode;
+    }
+
+
+
+    // document.querySelector('.add-more').addEventListener('click', function() {
+    //     const fieldGroup = document.querySelector('.field-group');
+    //     const newFieldGroup = fieldGroup.cloneNode(true);
+
+    //     // Clear the values for cloned inputs
+    //     newFieldGroup.querySelectorAll('input').forEach(input => input.value = '');
+
+    //     // Remove the add button if exists
+    //     const addButton = newFieldGroup.querySelector('.add-more');
+    //     if (addButton) addButton.remove();
+
+    //     // Create the remove button
+    //     const removeBtnDiv = document.createElement('div');
+    //     removeBtnDiv.classList.add('col-lg-1', 'mt-2',);
+
+    //     const removeBtn = document.createElement('button');
+    //     removeBtn.type = 'button';
+    //     removeBtn.classList.add('remove-field', 'btn', 'btn-danger', 'w-100');
+    //     removeBtn.textContent = '-';
+
+    //     removeBtnDiv.appendChild(removeBtn);
+    //     newFieldGroup.appendChild(removeBtnDiv);
+
+    //     document.getElementById('dynamic-fields').appendChild(newFieldGroup);
+    // });
+
+    // // Handle remove button click
+    // document.addEventListener('click', function(e) {
+    //     if (e.target && e.target.classList.contains('remove-field')) {
+    //         if (document.querySelectorAll('.field-group').length > 1) {
+    //             e.target.closest('.field-group').remove();
+    //         }
+    //     }
+    // });
+
+// Function to calculate and update the price value
+function calculatePriceValue(fieldGroup) {
+    const basic = parseFloat(fieldGroup.querySelector('input[name="basicsupply[]"]').value) || 0;
+    const freight = parseFloat(fieldGroup.querySelector('input[name="freightvalue[]"]').value) || 0;
+    const install = parseFloat(fieldGroup.querySelector('input[name="installvalue[]"]').value) || 0;
+
+    const total = basic + freight + install;
+    fieldGroup.querySelector('input[name="pricevalue[]"]').value = total.toFixed(2);
+}
+
+// Add more field groups dynamically
+document.querySelector('.add-more').addEventListener('click', function () {
+    const fieldGroup = document.querySelector('.field-group');
+    const newFieldGroup = fieldGroup.cloneNode(true);
+
+    // Clear values for cloned inputs
+    newFieldGroup.querySelectorAll('input').forEach(input => input.value = '');
+
+    // Remove the add button if it exists
+    const addButton = newFieldGroup.querySelector('.add-more');
+    if (addButton) addButton.remove();
+
+    // Create the remove button
+    const removeBtnDiv = document.createElement('div');
+    removeBtnDiv.classList.add('col-lg-1', 'mt-2');
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.classList.add('remove-field', 'btn', 'btn-danger', 'w-100');
+    removeBtn.textContent = '-';
+    removeBtnDiv.appendChild(removeBtn);
+    newFieldGroup.appendChild(removeBtnDiv);
+
+    // Append the new field group
+    document.getElementById('dynamic-fields').appendChild(newFieldGroup);
+});
+
+// Handle remove button click
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.classList.contains('remove-field')) {
+        if (document.querySelectorAll('.field-group').length > 1) {
+            e.target.closest('.field-group').remove();
+        }
+    }
+});
+
+// Listen for input changes to recalculate the price value
+document.addEventListener('input', function (e) {
+    const target = e.target;
+    if (['basicsupply[]', 'freightvalue[]', 'installvalue[]'].includes(target.getAttribute('name'))) {
+        const fieldGroup = target.closest('.field-group');
+        calculatePriceValue(fieldGroup);
+    }
+});
+
+
