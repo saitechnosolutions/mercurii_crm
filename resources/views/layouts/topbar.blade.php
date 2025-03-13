@@ -141,78 +141,77 @@
                                 data-key="t-calendar">Customer</a>
                                 <a href="/terms" class="dropdown-item"
                                 data-key="t-calendar">Add Terms</a>
+                                <a href="{{ url('/product-categories') }}" class="dropdown-item" data-key="t-calendar">Product Categories</a>
 
                             </div>
                         </li>
 
 
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/activities" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Activities</span>
-                        </a>
-                    </li> --}}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/viewleads" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Leads</span>
-                        </a>
-                    </li>
+                        {{-- <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/activities" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">Activities</span>
+                            </a>
+                        </li> --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/viewleads" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">Leads</span>
+                            </a>
+                        </li>
                     @endif
-                    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Design' )
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/viewconverted" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Design</span>
-                        </a>
-                    </li>
+                    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Design')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/viewconverted" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">Design</span>
+                            </a>
+                        </li>
                     @endif
                     @if (Auth::user()->role == 'Super Admin')
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/viewquota" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/vieworfapp" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">ORF</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/viewreport" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Reports</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Cs' )
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages"
-                            role="button">
-                            <i data-feather="grid"></i><span data-key="t-apps">Approvals</span>
-                            <div class="arrow-down"></div>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="topnav-pages">
-
-                            <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
-                                Customization</a>
-
-                            <a href="/vieworf" class="dropdown-item"
-                                data-key="t-calendar">ORF Approval</a>
-
-                        </div>
-                    </li>
-                   @endif
-
-
-                        {{-- <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle arrow-none" href="/enq-leadentry" id="topnav-dashboard"
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/viewquota" id="topnav-dashboard"
                                 role="button">
                                 <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
                             </a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/vieworfapp" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">ORF</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="/viewreport" id="topnav-dashboard"
+                                role="button">
+                                <i data-feather="home"></i><span data-key="t-dashboards">Reports</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Cs')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
+                                <i data-feather="grid"></i><span data-key="t-apps">Approvals</span>
+                                <div class="arrow-down"></div>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="topnav-pages">
+
+                                <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
+                                    Customization</a>
+
+                                <a href="/vieworf" class="dropdown-item" data-key="t-calendar">ORF Approval</a>
+
+                            </div>
+                        </li>
+                    @endif
+
+
+                    {{-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none" href="/enq-leadentry" id="topnav-dashboard"
+                            role="button">
+                            <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
+                        </a>
+                    </li>
                     @endif --}}
                     <!-- vendor menu -->
                     <li class="nav-item dropdown">
@@ -226,8 +225,10 @@
                                 Customization</a> --}}
 
                             <a href="{{ url('/vendors') }}" class="dropdown-item" data-key="t-calendar">Vendors</a>
-                            <a href="{{ url('/purchase-order') }}" class="dropdown-item" data-key="t-calendar">Purchase Order</a>
-                            <a href="{{ url('/purchase-entry') }}" class="dropdown-item" data-key="t-calendar">Products Entry</a>
+                            <a href="{{ url('/purchase-order') }}" class="dropdown-item" data-key="t-calendar">Purchase
+                                Order</a>
+                            <a href="{{ url('/purchase-entry') }}" class="dropdown-item" data-key="t-calendar">Products
+                                Entry</a>
 
                         </div>
                     </li>
