@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductCategory;
+use App\Models\PurchaseOrder;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use App\DataTables\VendorDataTable;
@@ -29,16 +31,112 @@ class VendorController extends Controller
         $vendor->city_id = $request->input('city_id');
         $vendor->postal_code = $request->input('postal_code');
         $vendor->vendor_status = $request->input('vendor_status');
+        $vendor->product_cat_id = $request->input('pro_cat_id');
 
-        if ($vendor->save()) {
+        $isVendorInsert = $vendor->save();
+        $lastInserted = Vendor::latest()->first();
+
+        $vendorIdArray = [];
+
+        // to find existing category to insert vendorid
+
+        $category = ProductCategory::find($request->input('pro_cat_id'));
+
+        if($isVendorInsert){
+            if ($category->vendor_id == null) {
+                array_push($vendorIdArray, (int)$lastInserted->id);
+            } else {
+                $vendorIdArray = json_decode($category->vendor_id);
+                array_push($vendorIdArray, $lastInserted->id);
+            }
+            $category->vendor_id = json_encode($vendorIdArray);
+            $category->update();
+            
             return redirect()->route('pages.vendor.vendorList')->with('success', 'Vendor Details successfully!');
-        } else {
+        }else{
             return redirect()->route('pages.vendor.addVendors')->with('error', 'Something went wrong, Please try again');
         }
     }
 
     public function viewPurchaseOrder()
     {
+        return view('pages.vendor.purchaseOrder');
+    }
+
+    public function savePo(Request $request)
+    {
+
+        
+
+        function generatePONumber($lastPONumber = null) {
+            // Get current date
+            $currentYear = date('Y');
+            $currentMonth = date('m');
+        
+            // Calculate financial year
+            if ($currentMonth >= 4) { // From April to December
+                $startYear = $currentYear % 100;  // Last two digits of year
+                $endYear = ($currentYear + 1) % 100;
+            } else { // From January to March (Still in previous financial year)
+                $startYear = ($currentYear - 1) % 100;
+                $endYear = $currentYear % 100;
+            }
+        
+            // Format financial year as "24-25"
+            $financialYear = sprintf("%02d-%02d", $startYear, $endYear);
+        
+            // Determine next PO number
+            if ($lastPONumber) {
+                $lastNumber = (int)substr($lastPONumber, strrpos($lastPONumber, '/') + 1);
+                $nextNumber = $lastNumber + 1;
+            } else {
+                $nextNumber = 1;
+            }
+        
+            // Generate PO number
+            return "MIS/PO/$financialYear/" . str_pad($nextNumber, 3, "0", STR_PAD_LEFT);
+        }
+
+        $catId = $request->catId;
+        $proId = $request->proId;
+        $vendorId = $request->vendorId;
+        $existQty = $request->existQty;
+        $unit_price = $request->unit_price;
+        $qty = $request->qty;
+        $gst = $request->gst;
+        $sub_total = $request->sub_total;
+        $product_total = $request->product_total;
+        $product_description = $request->pro_des;
+        $roundoff = $request->roundoff;
+
+        dd($roundoff);
+        
+        foreach ($catId as $key => $value) {
+            $lastInserted = PurchaseOrder::latest()->first();
+            
+            if($lastInserted == null){
+                $newPONumber = generatePONumber("MIS/PO/24-25/286");
+            }else{
+                
+                $lastPONumber = $lastInserted->po_no;
+                $newPONumber = generatePONumber($lastPONumber);
+            }
+            
+            PurchaseOrder::create([
+                "po_no" => $newPONumber,
+                "product_id" => $proId[$key],
+                "vendor_id" => $vendorId[$key],
+                "product_qty" => $existQty[$key],
+                "unit_price" => $unit_price[$key],
+                "product_total_price" => $qty[$key],
+                "gst_amount" => $gst[$key],
+                "sub_total" => $sub_total[$key],
+                "total_amount" => $product_total[$key],
+                "product_description" => $product_description[$key],
+                "roundoff" => $roundoff[$key],
+            ]);
+        }
+        
         return view('pages.vendor.purchaseOrder');
     }
 }

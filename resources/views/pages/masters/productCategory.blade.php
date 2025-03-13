@@ -8,7 +8,7 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h5 class="mt-2 mb-4">Product Categories</h5>
+                        <h5 class="mt-2 mb-5">Product Categories</h5>
                     </div>
                     <div class="col-lg-6" style="text-align: end;">
                         <a data-bs-target="#add_category_modal" data-bs-toggle="modal"
@@ -24,8 +24,8 @@
                         <tr>
                             <th style="text-align: center;">S.No</th>
                             <th style="text-align: center;">Category</th>
-                            <th style="text-align: center;">Sub Category</th>
-                            <th style="text-align: center;">Type</th>
+                            <!-- <th style="text-align: center;">Sub Category</th>
+                            <th style="text-align: center;">Type</th> -->
                             <th style="text-align: center;">Action</th>
 
                         </tr>
@@ -38,8 +38,8 @@
                             <tr style="text-align: center;">
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $data->category_name}}</td>
-                                <td>{{ $data->sub_category }}</td>
-                                <td>{{ $data->type }}</td>
+                                <!-- <td>{{ $data->sub_category }}</td>
+                                <td>{{ $data->type }}</td> -->
                                 <td>
                                     <div class="buttons_td">
                                         <button type="button" class="btn btn-bull_yellow edit-cat-btn waves-effect waves-light"

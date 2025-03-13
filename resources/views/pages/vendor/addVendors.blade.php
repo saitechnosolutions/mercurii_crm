@@ -5,23 +5,27 @@
     @php
         $countries = DB::table('countries')->where('id', 76)->get(); // Fetching all countries from the database
     @endphp
+    <div class="container">
+            <h4 class="mt-4 mb-5 text-center">Add Vendor Details</h4>
+        </div>
     <section class="section leadsection">
+        
         <div class="container form-card">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-6">
-                            <h5 class="mt-2">Add Vendor Details</h5>
+
                         </div>
                         <div class="col-lg-4">
                         </div>
-                        <div class="col-lg-2">
+                        <div class="col-lg-2 mt-3">
                             <a href="/vendors" class="btn btn-primary d-block add-employee-btn">Back</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <form method="POST" action="/saveVendors">
+            <form method="POST" action="{{ route("add-vendors") }}">
                 <div class="row mb-4">
                     @csrf
                     <!-- Company Name Field -->
@@ -54,12 +58,12 @@
                         <div class="form-group mt-4">
                             <label for="exampleFormControlInput1" class="form-label">Product Category <span
                                     style="color:red">*</span></label>
-                            <select class="form-select " name="Productcategory" required>
+                            <select class="form-select" name="pro_cat_id" required>
                                 <option value="">-- Choose Category --</option>
-                                @if ($status = App\Models\Dropdowndata::where('formid', 7)->orderBy('orderno', 'asc')->get())
+                                @if ($status = App\Models\ProductCategory::get())
                                     @foreach ($status as $data)
                                         <option value="{{ $data->id }}">
-                                            {{ $data->dropdowndata }}
+                                            {{ $data->category_name }}
                                         </option>
                                     @endforeach
                                 @endif
@@ -101,7 +105,6 @@
                                 <option value=""> -- Choose State -- </option>
                                 @if($product = App\Models\Statelist::get())
                                     @foreach ($product as $p)
-
                                         <option value="{{ $p->id }}">{{ $p->state }}</option>
                                     @endforeach
                                 @endif
@@ -198,7 +201,7 @@
 
                 </div>
         </div>
-        <button type="submit" class="btn btn-primary m-auto d-block add-employee-btn mt-4 mb-2">Save Vendor</button>
+        <button type="submit" class="btn btn-primary m-auto d-block add-employee-btn mt-5 mb-4">Save Vendor</button>
         </form>
         {{-- </div> --}}
     </section>

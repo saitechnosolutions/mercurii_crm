@@ -3,6 +3,7 @@
 body {
     font-family: "Poppins", serif !important;
 }
+
 .topnav {
     margin-top: 0 !important;
 }
@@ -20,23 +21,28 @@ body {
     border-bottom: none !important;
     background: #ffffff !important;
 }
+
 .navbar-brand-box {
     background: #ffffff !important;
     box-shadow: none !important;
 }
+
 .bg-light-subtle {
-    background-color:#ffffff !important;
-    border:none !important;
+    background-color: #ffffff !important;
+    border: none !important;
 }
+
 .topnav {
-    margin-top:0px;
-    border:none;
+    margin-top: 0px;
+    border: none;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
 .navbar-brand-box {
-    border:none;
+    border: none;
     width: 290px;
 }
+
 .btn-bull_red {
     color: #fff !important;
     background: #ed3338 !important;
@@ -60,6 +66,7 @@ body {
     box-shadow: 0 2px 6px 0 rgb(250 176 32) !important;
     transition: all 0.5s;
 }
+
 .btn-bull_org {
     color: #000 !important;
     background: #fe6600 !important;
@@ -67,6 +74,7 @@ body {
     box-shadow: 0 2px 6px 0 rgb(252 103 2) !important;
     transition: all 0.5s;
 }
+
 .btn-bull_loblue {
     color: #000 !important;
     background: #1b5584 !important;
@@ -74,6 +82,7 @@ body {
     box-shadow: 0 2px 6px 0 rgb(27 85 131) !important;
     transition: all 0.5s;
 }
+
 .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: #1b5584 !important;
@@ -87,6 +96,7 @@ body {
     box-shadow: 0 2px 6px 0 rgb(32 30 30) !important;
     transition: all 0.5s;
 }
+
 .mandatory {
     color: red;
 }
@@ -94,6 +104,7 @@ body {
 .error-msg {
     color: red;
 }
+
 .topnav .navbar-nav .nav-item .nav-link.active {
     color: #ff6500 !important;
 }
@@ -102,11 +113,13 @@ body {
     color: #ff6500 !important;
 }
 
-.topnav .navbar-nav .nav-link:focus, .topnav .navbar-nav .nav-link:hover {
+.topnav .navbar-nav .nav-link:focus,
+.topnav .navbar-nav .nav-link:hover {
     color: #ff6500 !important;
 }
 
-.topnav .navbar-nav .dropdown-item.active, .topnav .navbar-nav .dropdown-item:hover {
+.topnav .navbar-nav .dropdown-item.active,
+.topnav .navbar-nav .dropdown-item:hover {
     color: #ff6500 !important;
 }
 
@@ -118,19 +131,21 @@ body {
     background-color: transparent !important;
 }
 
-.leadsection{
+.leadsection {
     /* box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px; */
     padding: 10px;
-    border-radius:10px;
+    border-radius: 10px;
     background-color: #ffffff;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
+
 .button-box {
     position: absolute;
     right: 5px;
     bottom: 0px;
     padding: 15px;
 }
+
 .notes-form-box {
     background-color: #fff;
     margin: 15px 0px;
@@ -143,6 +158,7 @@ body {
     word-wrap: break-word;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 }
+
 .notes-form-box span {
     margin-top: 10px;
     padding: 3px;
@@ -159,6 +175,7 @@ body {
     padding-top: 90px;
     padding-left: 50px;
 }
+
 .dasboard-welcome-card {
     width: 100%;
     background-image: url(/assets/images/dashmec.png);
@@ -168,23 +185,30 @@ body {
     border-radius: 30px;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
+
 .topnav .navbar-nav .nav-link {
-    color:#000 !important;
+    color: #000 !important;
 }
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
     color: var(--bs-nav-pills-link-active-color);
     background-color: #1b5684 !important;
 }
-.active>.page-link, .page-link.active {
+
+.active>.page-link,
+.page-link.active {
     z-index: 3;
     color: var(--bs-pagination-active-color);
     background-color: #1b5684 !important;
     border-color: #1b5684 !important;
 }
+
 .btn:hover {
 
-    background-color:#1b5684 !important;
+    background-color: #1b5684 !important;
 }
+
 .estimatecreate {
     height: 175px;
     position: relative;
@@ -193,6 +217,7 @@ body {
     box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
+
 .estimatecreate .es {
     position: absolute;
     top: 50%;
@@ -200,10 +225,10 @@ body {
     transform: translate(-50%, -50%);
     color: #ccc;
 }
+
 .estimatelist {
     list-style: none;
-    display: flex
-;
+    display: flex;
     position: absolute;
     padding-left: 0px;
     bottom: -10px;
@@ -212,6 +237,7 @@ body {
     color: #000;
     background-color: #f7f7f7;
 }
+
 .icon-box {
     display: inline-flex;
     align-items: center;
@@ -219,4 +245,39 @@ body {
     width: 35px;
     height: 35px;
     border-radius: 5px;
+}
+
+table tbody td {
+    align-content: center;
+}
+
+/* select 2 dropdown styles */
+
+.select2-container .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 35px !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding-top: 4px;
+}
+
+.select2-container--default .select2-selection--single{
+    background-color: #f8f9fa !important;
+}
+
+.form-submit-btn{
+    width: 30%;
+    height: 50px;
+}
+
+.po-remove-btn{
+    position: absolute !important;
+    bottom: 5%;
+    right: 0;
+    z-index: 1;
+    width: 30px !important;
+    font-size: 20px;
+    color: red;
+    cursor: pointer;
 }
