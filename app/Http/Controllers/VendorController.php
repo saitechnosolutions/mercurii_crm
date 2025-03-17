@@ -150,6 +150,8 @@ class VendorController extends Controller
         $product_description = $request->pro_des;
         $roundoff = $request->roundoff;
 
+        // dd($sub_total);
+
         foreach ($catId as $key => $value) {
             $lastInserted = PurchaseOrder::latest()->first();
 
@@ -168,6 +170,7 @@ class VendorController extends Controller
                 }
 
             }
+            
 
             PurchaseOrder::create([
                 "cat_id" => $catId,

@@ -138,10 +138,12 @@ $(document).on("change", ".products_dropdown_po", function () {
     var rate = parseFloat(selectedOption.data('rate'));
     var gst = parseFloat(selectedOption.data('gst'));
     var existQty = selectedOption.data('existquantity');
+    $(this).closest('.po-form-box').find(".po_qty").val("1");
     $(this).closest('.po-form-box').find(".po_exist_qty").val(existQty);
     $(this).closest('.po-form-box').find(".po_unit_price").val(rate);
     $(this).closest('.po-form-box').find(".po_gst").val(gst);
-    var subtotal = existQty * rate;
+    var qty = $(this).closest('.po-form-box').find(".po_qty").val();
+    var subtotal = parseFloat(qty) * rate;
     $(this).closest('.po-form-box').find(".product_subtotal").val(subtotal);
     var productGstAmt = (rate / 100) * gst;
     var productTotal = rate + productGstAmt;

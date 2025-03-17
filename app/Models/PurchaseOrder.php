@@ -12,6 +12,7 @@ class PurchaseOrder extends Model
     protected $table = "purchase_order_tb";
 
     protected $fillable = [
+        'cat_id',  
         'po_no',  
         'product_id',  
         'vendor_id',  
