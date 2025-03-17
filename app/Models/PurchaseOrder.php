@@ -22,5 +22,6 @@ class PurchaseOrder extends Model
         'sub_total',  
         'total_amount',  
         'product_description',  
+        'roundoff',  
     ];
 }

@@ -131,12 +131,12 @@
                                             style="color:red">*</span></label>
                                     <input type="decimal" name="product_total[]" id="pro_tot_amt"
                                         class="form-control pro_tot_amt" required readonly>
-                                    <input type="hidden" name="sub_total" class="product_subtotal">                                        
+                                    <input type="hidden" name="sub_total[]" class="product_subtotal">                                        
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group mt-4 d-flex" style="align-items: center;height: 100%">
-                                    <input type="checkbox" id="roundoff">
+                                    <input type="checkbox" class="roundoffCheckbox">
                                     <span class="ms-2"><label for="roundoff" style="margin:0">Round off</label></span>
                                     <input type="hidden" name="roundoff[]" class="roundoff" value="0">
                                 </div>

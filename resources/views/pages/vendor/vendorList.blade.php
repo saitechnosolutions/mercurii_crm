@@ -33,6 +33,7 @@
                 <table id="vendor-table" class="display">
                     <thead>
                         <tr>
+                            <th>S.No</th>
                             <th>Company Name</th>
                             <th>Address</th>
                             <th>City</th>
@@ -49,10 +50,12 @@
                         @endphp
                         @foreach ($vendors as $data)
                             @php
+                                $i=1;
                                 $stateName = $data->stateData->state;
                                 $cityName = $data->cityData->city_name;
                             @endphp
                             <tr>
+                                <td>{{ $i++ }}</td>
                                 <td>{{ $data->company_name }}</td>
                                 <td>{{ $data->address }}</td>
                                 <td>{{ $cityName }}</td>

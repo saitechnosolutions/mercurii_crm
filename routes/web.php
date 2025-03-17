@@ -145,7 +145,7 @@ Route::view('/viewreport', 'pages.reports');
 Route::view('/vendorinvoice', 'quotations.vendorinvoice');
 // vendor
 Route::get('/vendors', [VendorController::class, 'viewVendors'])->name('pages.vendor.vendorList');
-Route::get('/purchase-order', [VendorController::class, 'viewPurchaseOrder']);
+Route::get('/purchase-order', [VendorController::class, 'viewPurchaseOrder'])->name('purchase-order-page');
 Route::view('/create-po','pages.vendor.addPurchaseOrder')->name('pages.vendor.create-po');
 Route::view('/purchase-entry', "pages.vendor.purchaseEntry");
 Route::view('/vendor/po-invoice', "pages.vendor.po_invoice");

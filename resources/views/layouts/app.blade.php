@@ -222,31 +222,6 @@
                 }
             }
 
-            $(document).on("change",'.state_list',function(){
-
-                fetchCitiesVendor($(this).val());
-            });
-
-            function fetchCitiesVendor(stateId) {
-                if (stateId) {
-                    $.ajax({
-                        url: '/get-cities/' + stateId,
-                        method: 'GET',
-                        success: function (response) {
-                            $('#vendor_city_list').empty().append('<option value=""> -- Choose City -- </option>');
-
-                            $.each(response, function (index, city) {
-                                $('#vendor_city_list').append(
-                                    `<option value="${city.id}">${city.city_name}</option>`
-                                );
-                            });
-                        },
-                        error: function () {
-                            alert('Unable to fetch cities.');
-                        }
-                    });
-                }
-            }
         });
 
     </script>

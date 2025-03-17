@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('terms', function (Blueprint $table) {
-            $table->boolean('term_approve')->default(false)->after('termtype');
-            // Replace 'existing_column_name' with the column after which you want to place 'term_approve'
+        Schema::table('vendor_details_tb', function (Blueprint $table) {
+            $table->json('product_cat_id')->change();
         });
     }
 
@@ -22,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('terms', function (Blueprint $table) {
-            $table->dropColumn('term_approve');
+        Schema::table('vendor_details_tb', function (Blueprint $table) {
+            $table->integer('product_cat_id')->change();
         });
     }
 };

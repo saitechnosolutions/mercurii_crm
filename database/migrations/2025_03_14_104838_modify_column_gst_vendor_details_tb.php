@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            if (!Schema::hasColumn('products', 'quantity')) {
-                $table->integer('quantity')->nullable();
-            }
+        Schema::table('vendor_details_tb', function (Blueprint $table) {
+            $table->string('gst_number')->change();
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            //
+        Schema::table('vendor_details_tb', function (Blueprint $table) {
+            $table->integer('gst_number')->change();
         });
     }
 };

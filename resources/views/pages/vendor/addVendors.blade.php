@@ -58,7 +58,7 @@
                         <div class="form-group mt-4">
                             <label for="exampleFormControlInput1" class="form-label">Product Category <span
                                     style="color:red">*</span></label>
-                            <select class="form-select" name="pro_cat_id" required>
+                            <select class="form-select" name="pro_cat_id[]" id="addvendor_cat_list" required multiple="multiple">
                                 <option value="">-- Choose Category --</option>
                                 @if ($status = App\Models\ProductCategory::get())
                                     @foreach ($status as $data)
@@ -101,7 +101,7 @@
                         <div class="form-group mt-4">
                             <label for="exampleFormControlInput1" class="form-label">State <span
                                     style="color:red">*</span></label>
-                            <select class="form-select state_list" name="state_id" id="vendor_state_list" required>
+                            <select class="form-select state_list" name="state_id" id="addvendor_state_list" required>
                                 <option value=""> -- Choose State -- </option>
                                 @if($product = App\Models\Statelist::get())
                                     @foreach ($product as $p)
@@ -117,7 +117,7 @@
                         <div class="form-group mt-4">
                             <label for="exampleFormControlInput1" class="form-label">City <span
                                     style="color:red">*</span></label>
-                            <select class="form-select " name="city_id" id="vendor_city_list" required>
+                            <select class="form-select " name="city_id" id="addvendor_city_list" required>
                                 <option value=""> -- Choose City -- </option>
                             </select>
                         </div>

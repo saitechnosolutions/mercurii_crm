@@ -31,31 +31,71 @@ class VendorController extends Controller
         $vendor->city_id = $request->input('city_id');
         $vendor->postal_code = $request->input('postal_code');
         $vendor->vendor_status = $request->input('vendor_status');
-        $vendor->product_cat_id = $request->input('pro_cat_id');
+        $vendor->product_cat_id = json_encode($request->input('pro_cat_id'), true);
+
+
+
+        // to generate vendorId
+        function incrementCode($code)
+        {
+            // Split the code into parts
+            $parts = explode('-', $code);
+
+            // Get the numeric part and increment it
+            $number = (int) $parts[2] + 1;
+
+            // Format back with leading zeros
+            return sprintf('%s-%s-%03d', $parts[0], $parts[1], $number);
+        }
+
+        $lastInserted = Vendor::latest()->first();
+
+        if ($lastInserted == null) {
+            $vendorId = incrementCode("MIS-VEN-000");
+        } else {
+            $vendorId = incrementCode($lastInserted->vendor_id);
+        }
+
+
+        $vendor->vendor_id = $vendorId;
 
         $isVendorInsert = $vendor->save();
         $lastInserted = Vendor::latest()->first();
 
-        $vendorIdArray = [];
+        
 
         // to find existing category to insert vendorid
 
-        $category = ProductCategory::find($request->input('pro_cat_id'));
 
-        if($isVendorInsert){
-            if ($category->vendor_id == null) {
-                array_push($vendorIdArray, (int)$lastInserted->id);
+
+        foreach ($request->input('pro_cat_id') as $key => $value) {
+            $category = ProductCategory::find($value);
+            $vendorIdArray = [];
+            if ($isVendorInsert) {
+                if ($category->vendor_id == null) {
+                    array_push($vendorIdArray, (int) $lastInserted->id);
+                } else {
+                    $vendorIdArray = json_decode($category->vendor_id);
+                    array_push($vendorIdArray, $lastInserted->id);
+                }
+                $category->vendor_id = json_encode($vendorIdArray);
+                $category->update();
+
+
             } else {
-                $vendorIdArray = json_decode($category->vendor_id);
-                array_push($vendorIdArray, $lastInserted->id);
+                
             }
-            $category->vendor_id = json_encode($vendorIdArray);
-            $category->update();
-            
+        }
+
+        if ($isVendorInsert) {
             return redirect()->route('pages.vendor.vendorList')->with('success', 'Vendor Details successfully!');
         }else{
             return redirect()->route('pages.vendor.addVendors')->with('error', 'Something went wrong, Please try again');
         }
+
+
+
+
     }
 
     public function viewPurchaseOrder()
@@ -66,13 +106,14 @@ class VendorController extends Controller
     public function savePo(Request $request)
     {
 
-        
 
-        function generatePONumber($lastPONumber = null) {
+
+        function generatePONumber($lastPONumber = null)
+        {
             // Get current date
             $currentYear = date('Y');
             $currentMonth = date('m');
-        
+
             // Calculate financial year
             if ($currentMonth >= 4) { // From April to December
                 $startYear = $currentYear % 100;  // Last two digits of year
@@ -81,18 +122,18 @@ class VendorController extends Controller
                 $startYear = ($currentYear - 1) % 100;
                 $endYear = $currentYear % 100;
             }
-        
+
             // Format financial year as "24-25"
             $financialYear = sprintf("%02d-%02d", $startYear, $endYear);
-        
+
             // Determine next PO number
             if ($lastPONumber) {
-                $lastNumber = (int)substr($lastPONumber, strrpos($lastPONumber, '/') + 1);
+                $lastNumber = (int) substr($lastPONumber, strrpos($lastPONumber, '/') + 1);
                 $nextNumber = $lastNumber + 1;
             } else {
                 $nextNumber = 1;
             }
-        
+
             // Generate PO number
             return "MIS/PO/$financialYear/" . str_pad($nextNumber, 3, "0", STR_PAD_LEFT);
         }
@@ -109,20 +150,27 @@ class VendorController extends Controller
         $product_description = $request->pro_des;
         $roundoff = $request->roundoff;
 
-        dd($roundoff);
-        
         foreach ($catId as $key => $value) {
             $lastInserted = PurchaseOrder::latest()->first();
-            
-            if($lastInserted == null){
+
+
+
+            if ($lastInserted == null) {
                 $newPONumber = generatePONumber("MIS/PO/24-25/286");
-            }else{
-                
-                $lastPONumber = $lastInserted->po_no;
-                $newPONumber = generatePONumber($lastPONumber);
+            } else {
+
+                if ($key < 1) {
+                    $lastPONumber = $lastInserted->po_no;
+
+                    $newPONumber = generatePONumber($lastPONumber);
+                } else {
+                    $newPONumber = $lastInserted->po_no;
+                }
+
             }
-            
+
             PurchaseOrder::create([
+                "cat_id" => $catId,
                 "po_no" => $newPONumber,
                 "product_id" => $proId[$key],
                 "vendor_id" => $vendorId[$key],
@@ -133,10 +181,10 @@ class VendorController extends Controller
                 "sub_total" => $sub_total[$key],
                 "total_amount" => $product_total[$key],
                 "product_description" => $product_description[$key],
-                "roundoff" => $roundoff[$key],
+                "roundoff" => $roundoff[$key] ?? 0,
             ]);
         }
-        
-        return view('pages.vendor.purchaseOrder');
+
+        return redirect()->route('purchase-order-page')->with('success', 'Purchase order created successfully');
     }
 }
