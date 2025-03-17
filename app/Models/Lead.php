@@ -29,6 +29,10 @@ public function assignedUser()
 }
 
 
+protected $casts = [
+    'converteddate' => 'datetime',
+];
+
 }
 
 

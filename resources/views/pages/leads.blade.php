@@ -233,16 +233,20 @@
                     </div>
                     <div class="mb-3" id="convertedOptionsDiv" style="display: none;">
                         <div class="form-group mt-4">
+                            <label for="converteddate" class="form-label">Converted Date <span style="color:red">*</span></label>
+                            <input type="date" class="form-control" name="converteddate" id="converteddate" required placeholder="">
+                        </div>
+                        <div class="form-group mt-4">
                             <label for="exampleFormControlInput1"
                                 class="form-label">Categories <span
                                 style="color:red">*</span></label>
                                 <select class="form-select " name="category" id="catepro" required>
                                     <option value=""> Choose Category </option>
-                                    @if ($status = App\Models\Dropdowndata::where('formid', 7)->orderBy('orderno', 'asc')->get())
+                                    @if ($status = App\Models\ProductCategory::get())
                                     @foreach ($status as $data)
                                         <option value="{{ $data->id }}"
                                             >
-                                            {{ $data->dropdowndata }}</option>
+                                            {{ $data->category_name }}</option>
                                     @endforeach
                                 @endif
 

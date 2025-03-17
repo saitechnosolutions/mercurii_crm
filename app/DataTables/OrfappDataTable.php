@@ -130,14 +130,14 @@ $sigdrawUrl = !empty($query->sigdraw) ? url('assets/images/' . ltrim(str_replace
             'orf.*',
             'leads.LeadName',
             'leads.assigned_to',
-            'cate.dropdowndata as cat_name',
+            'cate.category_name as cat_name',
             // 'leads.category',
             'users.name'
         ])
         ->where('orf.approval_status','=', 1)
         ->where('orf.cs_status','=', 1)
         ->leftJoin('leads', 'orf.leano', '=', 'leads.id')
-        ->leftJoin('dropdowndatas as cate', 'cate.id', '=', 'leads.category')
+        ->leftJoin('product_categories_tb as cate', 'cate.id', '=', 'leads.category')
         ->leftJoin('users', 'users.id', '=', 'leads.assigned_to');
 
     }

@@ -196,8 +196,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-                                <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
-                                    Customization</a>
+                                {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
+                                    Customization</a> --}}
 
                                 <a href="/vieworf" class="dropdown-item" data-key="t-calendar">ORF Approval</a>
 
