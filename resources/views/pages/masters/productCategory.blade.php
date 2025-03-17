@@ -92,20 +92,32 @@
                                 </div>
                             </div>
 
+
+
                             <div class="col-lg-6">
                                 <div class="form-group mt-4">
                                     <label for="exampleFormControlInput1" class="form-label">Sub Category<span
                                             style="color:red">*</span></label>
-                                    <input type="text" name="sub_category" class="form-control" placeholder="Type here..."
-                                        required>
+                                            <select class="form-select " name="type" required>
+                                                <option value="">-- Choose  --</option>
+                                                        <option value="mhe">MHE</option>
+                                                        <option value="rack">RACK</option>
+                                                        <option value="pallet">Pallet</option>
+                                            </select>
+                                    {{-- <input type="text" name="type" class="form-control" placeholder="Type here..." required> --}}
                                 </div>
                             </div>
-
                             <div class="col-lg-6">
                                 <div class="form-group mt-4">
                                     <label for="exampleFormControlInput1" class="form-label">Type<span
                                             style="color:red">*</span></label>
-                                    <input type="text" name="type" class="form-control" placeholder="Type here..." required>
+                                    {{-- <input type="text" name="sub_category" class="form-control" placeholder="Type here..."
+                                        required> --}}
+                                        <select class="form-select " name="sub_category" required>
+                                            <option value="">-- Choose Type --</option>
+                                                    <option value="special">Special</option>
+                                                    <option value="standard">Standard</option>
+                                        </select>
                                 </div>
                             </div>
                         </div>
@@ -143,12 +155,20 @@
                                 </div>
                             </div>
 
+
+
                             <div class="col-lg-6">
                                 <div class="form-group mt-4">
                                     <label for="exampleFormControlInput1" class="form-label">Sub Category<span
                                             style="color:red">*</span></label>
-                                    <input type="text" id="edit_sub_category_name" name="edit_sub_category_name"
-                                        class="form-control" placeholder="Type here..." required>
+                                            <select class="form-select " id="edit_type" name="edit_type" required>
+                                                <option value="">-- Choose  --</option>
+                                                        <option value="mhe">MHE</option>
+                                                        <option value="rack">RACK</option>
+                                                        <option value="pallet">Pallet</option>
+                                            </select>
+                                    {{-- <input type="text" id="edit_type" name="edit_type" class="form-control"
+                                        placeholder="Type here..." required> --}}
                                 </div>
                             </div>
 
@@ -156,10 +176,16 @@
                                 <div class="form-group mt-4">
                                     <label for="exampleFormControlInput1" class="form-label">Type<span
                                             style="color:red">*</span></label>
-                                    <input type="text" id="edit_type" name="edit_type" class="form-control"
-                                        placeholder="Type here..." required>
+                                    {{-- <input type="text" id="edit_sub_category_name" name="edit_sub_category_name"
+                                        class="form-control" placeholder="Type here..." required> --}}
+                                        <select class="form-select " id="edit_sub_category_name" name="edit_sub_category_name" required>
+                                            <option value="">-- Choose Type --</option>
+                                                    <option value="special">Special</option>
+                                                    <option value="standard">Standard</option>
+                                        </select>
                                 </div>
                             </div>
+
                         </div>
 
                         <button type="submit" class="btn btn-primary m-auto d-block add-employee-btn mt-4 mb-2">Edit

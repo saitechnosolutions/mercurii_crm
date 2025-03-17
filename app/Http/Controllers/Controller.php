@@ -16,6 +16,7 @@ use App\Models\Freight;
 use App\Models\Lead;
 use App\Models\LeadDesign;
 use App\Models\LeadProduct;
+use App\Models\ProductCategory;
 use App\Models\Quotation;
 use App\Models\QuotationProduct;
 use App\Models\Term;
@@ -489,6 +490,8 @@ public function updateStatusdf(Request $request)
         $lead->Leadstatus = $request->status;
         $lead->category = $request->category;
         $lead->products = $request->products;
+        $lead->remarks = $request->remarks;
+        $lead->converteddate = $request->converteddate;
         $lead->save();
 
         $customerId = null;
@@ -532,8 +535,8 @@ public function updateStatusdf(Request $request)
 
         // Determine the table for insertion
         // $categoriesForDesign = [354, 355, 358];
-        $categoriesForDesign = Dropdowndata::where('id', $request->category)
-                                     ->where('pro_catid', 'Special')
+        $categoriesForDesign = ProductCategory::where('id', $request->category)
+                                     ->where('sub_category', 'special')
                                      ->exists();
 
         // if (in_array($request->category, $categoriesForDesign)) {

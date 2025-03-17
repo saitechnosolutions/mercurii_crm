@@ -124,7 +124,8 @@ class ConvertedDataTable extends DataTable
         ->leftJoin('dropdowndatas as status', 'status.id', '=', 'leads.Leadstatus')
         ->leftJoin('city_list', 'city_list.id', '=', 'leads.citylist')
         ->leftJoin('users', 'users.id', '=', 'leads.assigned_to')
-        ->whereIn('leads.category', [354, 355, 358])
+        ->leftJoin('product_categories_tb', 'product_categories_tb.id', '=', 'leads.category')
+        ->where('product_categories_tb.sub_category', 'special')
         ->where('leads.Leadstatus', '=' , 343 )
         ->where(function($query) {
     $query->where('leads.quota_proceed', '!=', 1)

@@ -112,6 +112,17 @@
 
     <script src="/assets/js/app.js"></script>
     <script>
+       $(document).ready(function() {
+    $('#pendingTasks').DataTable({
+        responsive: true,
+        autoWidth: false,
+        order: [[6, 'desc']], // Fix: Adjusted index to 6 (Status column)
+        dom: 'Bfrtip',
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+    });
+});
+        </script>
+    <script>
         $(document).ready(function() {
             $('#technicalClosure').DataTable({
                 responsive: true,
@@ -119,14 +130,7 @@
             });
         });
         </script>
-          <script>
-            $(document).ready(function() {
-                $('#pendingTasks').DataTable({
-                    responsive: true,
-                    autoWidth: false
-                });
-            });
-            </script>
+
               <script>
                 $(document).ready(function() {
                     $('#pendingEnquiry').DataTable({
@@ -283,7 +287,7 @@
                                 }
                             },
                             error: function () {
-                                alert('Unable to fetch term data.');
+                                // alert('Unable to fetch term data.');
                             }
                         });
                     }
@@ -324,7 +328,7 @@
                             }
                         },
                         error: function () {
-                            alert('Unable to fetch term data.');
+                            // alert('Unable to fetch term data.');
                         }
                     });
                 }

@@ -249,8 +249,8 @@ $countries = DB::table('countries')->where('id',76)->get(); // Fetching all coun
             <div class="col-lg-2 mt-2">
                 <div class="form-group">
                     <label>Product Category</label>
-                    @if ($drop = App\Models\Dropdowndata::where('id', $lead->category)->first())
-                    <input type="text" name="catepro" class="form-control" value="{{ $drop->dropdowndata }}" placeholder="" style="background-color: #c6cbd0;" readonly  >
+                    @if ($drop = App\Models\ProductCategory::where('id', $lead->category)->first())
+                    <input type="text" name="catepro" class="form-control" value="{{ $drop->category_name }}" placeholder="" style="background-color: #c6cbd0;" readonly  >
                     @endif
                 </div>
             </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrfController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\VendorController;
 
@@ -142,7 +143,9 @@ Route::get('/viewquota', [Controller::class, 'viewquota'])->name('pages.viewquot
 // reports
 
 Route::view('/viewreport', 'pages.reports');
-Route::view('/vendorinvoice', 'quotations.vendorinvoice');
+// Route::view('/vendorinvoice', 'quotations.vendorinvoice');
+Route::get('/viewreport', [ReportController::class, 'showReports']);
+
 // vendor
 Route::get('/vendors', [VendorController::class, 'viewVendors'])->name('pages.vendor.vendorList');
 Route::get('/purchase-order', [VendorController::class, 'viewPurchaseOrder']);

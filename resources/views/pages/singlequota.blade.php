@@ -361,8 +361,8 @@
                                             class="form-label">Category Name </label>
                                             <input type="hidden" name="catename" class="form-control" value="{{ $lead->category }}" placeholder=""   >
                                             <input type="hidden" name="leadiid" class="form-control" value="{{ $lead->id }}" placeholder=""   >
-                                            @if ($drop = App\Models\Dropdowndata::where('id', $lead->category)->first())
-                                            <input type="text" name="" class="form-control" value="{{ $drop->dropdowndata }}" placeholder=""  disabled >
+                                            @if ($drop = App\Models\ProductCategory::where('id', $lead->category)->first())
+                                            <input type="text" name="" class="form-control" value="{{ $drop->category_name }}" placeholder=""  disabled >
                                             @endif
 
                                             <input type="hidden" name="assigneeto" class="form-control" value="{{ $lead->assigned_to }}" placeholder=""   >
@@ -386,10 +386,13 @@
 
                                     </div>
                                 </div>
-
+                                @php
+                                // use App\Models\ProductCategory;
+                                $breakdown = App\Models\ProductCategory::where('id', $lead->category)->where('type', 'rack')->first();
+                            @endphp
                                 <div id="dynamic-fields">
                                     <div class="row field-group">
-                                        @if (Auth::user()->role == 'Design')
+                                        @if (Auth::user()->role == 'Design' && $breakdown)
                                         <div class="col-lg-10 mt-2">
                                         </div>
 
@@ -404,7 +407,8 @@
                                             <label for="document" class="form-label">GA Drawing</label>
                                             <input type="file" class="form-control" name="drawing[]">
                                         </div>
-                                        @if (Auth::user()->role == 'Design')
+
+                                        @if (Auth::user()->role == 'Design' && $breakdown)
                                         <div class="col-lg-3 mt-2">
                                             <label for="document" class="form-label">Offer</label>
                                             <input type="file" class="form-control" name="offer[]">

@@ -123,7 +123,7 @@ class OrfDataTable extends DataTable
             'orf.*',
             'leads.LeadName',
             'leads.assigned_to',
-            'cate.dropdowndata as cat_name',
+            'cate.category_name as cat_name',
             // 'leads.category',
             'users.name'
         ])
@@ -136,7 +136,7 @@ class OrfDataTable extends DataTable
                   });
         })
         ->leftJoin('leads', 'orf.leano', '=', 'leads.id')
-        ->leftJoin('dropdowndatas as cate', 'cate.id', '=', 'leads.category')
+        ->leftJoin('product_categories_tb as cate', 'cate.id', '=', 'leads.category')
         ->leftJoin('users', 'users.id', '=', 'leads.assigned_to');
 
     }
