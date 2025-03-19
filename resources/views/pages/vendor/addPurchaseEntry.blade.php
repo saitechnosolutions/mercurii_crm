@@ -4,7 +4,7 @@
 
 
     <div class="container">
-        <h4 class="mt-4 mb-5 text-center">Create Purchase Order</h4>
+        <h4 class="mt-4 mb-5 text-center">Add Purchase Entry</h4>
     </div>
     <section class="section leadsection">
 
@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <form method="POST" action="/save-po" enctype="multipart/form-data">
+            <form method="POST" action="/save-po">
                 @csrf
                 <div class="row mb-4 po-form-box position-relative">
                     <div class="po-remove-btn">
@@ -91,7 +91,7 @@
 
                     <div class="col-lg-6">
                         <div class="form-group mt-4">
-                            <label for="exampleFormControlInput1" class="form-label">Existing Quantity<span
+                            <label for="exampleFormControlInput1" class="form-label">Requested Quantity<span
                                     style="color:red">*</span></label>
                             <input type="text" name="existQty[]" class="form-control po_exist_qty" id="po_exist_qty"
                                 required readonly>
@@ -100,18 +100,26 @@
 
                     <div class="col-lg-6">
                         <div class="form-group mt-4">
-                            <label for="exampleFormControlInput1" class="form-label">Unit Price <span
+                            <label for="exampleFormControlInput1" class="form-label">Received Quantity<span
                                     style="color:red">*</span></label>
-                            <input type="text" name="unit_price[]" class="form-control po_unit_price" id="po_unit_price"
-                                required readonly>
+                            <input type="text" name="qty[]" class="form-control po_qty" id="po_qty" required>
                         </div>
                     </div>
 
                     <div class="col-lg-6">
                         <div class="form-group mt-4">
-                            <label for="exampleFormControlInput1" class="form-label">Required Quantity<span
+                            <label for="exampleFormControlInput1" class="form-label">Pending Quantity<span
                                     style="color:red">*</span></label>
                             <input type="text" name="qty[]" class="form-control po_qty" id="po_qty" required>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group mt-4">
+                            <label for="exampleFormControlInput1" class="form-label">Unit Price<span
+                                    style="color:red">*</span></label>
+                            <input type="text" name="unit_price[]" class="form-control po_unit_price" id="po_unit_price"
+                                required readonly>
                         </div>
                     </div>
 
@@ -124,23 +132,12 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group mt-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Product Total <span
-                                            style="color:red">*</span></label>
-                                    <input type="decimal" name="product_total[]" id="pro_tot_amt"
-                                        class="form-control pro_tot_amt" required readonly>
-                                    <input type="hidden" name="sub_total[]" class="product_subtotal">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group mt-4 d-flex" style="align-items: center;height: 100%">
-                                    <input type="checkbox" class="roundoffCheckbox">
-                                    <span class="ms-2"><label for="roundoff" style="margin:0">Round off</label></span>
-                                    <input type="hidden" name="roundoff[]" class="roundoff" value="0">
-                                </div>
-                            </div>
+                        <div class="form-group mt-4">
+                            <label for="exampleFormControlInput1" class="form-label">Product Total <span
+                                    style="color:red">*</span></label>
+                            <input type="decimal" name="product_total[]" id="pro_tot_amt" class="form-control pro_tot_amt"
+                                required readonly>
+                            <input type="hidden" name="sub_total[]" class="product_subtotal">
                         </div>
                     </div>
 
@@ -154,37 +151,10 @@
                 </div>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-warning my-4" id="po_add_product_plus">Add Another
-                        Product</button>
+                    <button type="button" class="btn btn-warning my-4" id="po_add_product_plus">Add Another Product</button>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="text-start">
-                            <label for="exampleFormControlInput1" class="form-label">File Attachment</label>
-                            <input type="file" name="po_attachment" style="text-transform:uppercase;"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div>
-                            <label for="exampleFormControlInput1" class="form-label">Terms and Condition</label>
-                            <select class="form-select terms_condition_id" name="terms_condition_id"
-                                required>
-                                <option value="">-- Choose Category --</option>
-                                @if ($status = App\Models\Term::get())
-                                    @foreach ($status as $data)
-                                        <option value="{{ $data->id }}">
-                                            {{ $data->content }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary m-auto d-block mt-5 mb-3 form-submit-btn">Create</button>
+                <button type="submit" class="btn btn-primary m-auto d-block mt-4 mb-3 form-submit-btn">Create</button>
             </form>
 
         </div>

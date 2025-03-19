@@ -23,6 +23,24 @@ class PurchaseOrder extends Model
         'sub_total',  
         'total_amount',  
         'product_description',  
-        'roundoff',  
+        'roundoff',
+        'files',
+        'terms_condition_id'
     ];
+
+    public function categoryDetails(){
+        return $this->belongsTo(ProductCategory::class, 'cat_id', 'id');
+    }
+
+    public function productDetails(){
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function vendorDetails(){
+        return $this->belongsTo(Vendor::class, 'vendor_id', 'id');
+    }
+
+    public function termsConditionDetails(){
+        return $this->belongsTo(Term::class, 'terms_condition_id', 'id');
+    }
 }

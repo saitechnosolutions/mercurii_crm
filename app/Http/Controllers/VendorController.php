@@ -98,14 +98,33 @@ class VendorController extends Controller
 
     }
 
+    // delete po function
+
+    public function deletePO($poId){
+        $deletePo = PurchaseOrder::where('id',$poId)->delete();
+        if($deletePo){
+            return back()->with('delete-success','Purchase order deleted successfully');
+        }else{
+            return back()->with('delete-error','Something went wrong');
+        }
+    }
+
     public function viewPurchaseOrder()
     {
-        return view('pages.vendor.purchaseOrder');
+        $poDetails = PurchaseOrder::with(['vendorDetails','productDetails','categoryDetails'])->orderBy('id','desc')->get();
+        
+        return view('pages.vendor.purchaseOrder',compact('poDetails'));
+    }
+
+    public function viewPOInvoice($invoiceId)
+    {
+        $poDetails = PurchaseOrder::with(['vendorDetails','productDetails','categoryDetails'])->where('id',$invoiceId)->first();
+        
+        return view('pages.vendor.po_invoice',compact('poDetails'));
     }
 
     public function savePo(Request $request)
     {
-
 
 
         function generatePONumber($lastPONumber = null)
@@ -149,13 +168,18 @@ class VendorController extends Controller
         $product_total = $request->product_total;
         $product_description = $request->pro_des;
         $roundoff = $request->roundoff;
+        $termsConditionId = $request->terms_condition_id;
+        $fileAttach = $request->file("po_attachment");
 
-        // dd($sub_total);
+        $filename = time() . '_po_' . $fileAttach->getClientOriginalName();
+        $fileAttach->move(public_path('uploads/'), $filename);
+
+        
+
 
         foreach ($catId as $key => $value) {
+
             $lastInserted = PurchaseOrder::latest()->first();
-
-
 
             if ($lastInserted == null) {
                 $newPONumber = generatePONumber("MIS/PO/24-25/286");
@@ -170,10 +194,9 @@ class VendorController extends Controller
                 }
 
             }
-            
 
             PurchaseOrder::create([
-                "cat_id" => $catId,
+                "cat_id" => $value,
                 "po_no" => $newPONumber,
                 "product_id" => $proId[$key],
                 "vendor_id" => $vendorId[$key],
@@ -185,9 +208,15 @@ class VendorController extends Controller
                 "total_amount" => $product_total[$key],
                 "product_description" => $product_description[$key],
                 "roundoff" => $roundoff[$key] ?? 0,
+                "files" => $filename,
+                "terms_condition_id" => $termsConditionId,
             ]);
         }
 
-        return redirect()->route('purchase-order-page')->with('success', 'Purchase order created successfully');
+        // $lastInserted = PurchaseOrder::latest()->first();
+
+        // PurchaseOrder::where('id',$lastInserted->id)->update(['files',$filename]);
+
+        return redirect()->route('purchase-order-details-page')->with('success', 'Purchase order created successfully');
     }
 }

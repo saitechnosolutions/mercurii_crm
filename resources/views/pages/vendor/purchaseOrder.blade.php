@@ -30,7 +30,7 @@
         <div class="card">
             <div class="card-header">All Vendors</div>
             <div class="card-body">
-                <table id="purchase-order-table" class="display">
+                <table id="purchase-order-details-table" class="display">
                     <thead>
                         <tr>
                             <th>S.No</th>
@@ -46,7 +46,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
+                        @foreach ($poDetails as $key => $data)
+                            <tr style="text-align: center;">
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $data->categoryDetails->category_name }}</td>
+                                <td>{{ $data->productDetails->productname }}</td>
+                                <td>{{ $data->vendorDetails->company_name }}</td>
+                                <td>
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="₹{{ $data->productDetails->quantity * $data->productDetails->rate }}">{{ $data->productDetails->quantity }}</span>
+                                </td>
+                                <td>
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="₹{{ (int)$data->productDetails->product_qty * $data->productDetails->rate }}">{{ $data->product_qty }}</span>
+
+                                </td>
+                                <td>{{ $data->productDetails->rate }}</td>
+                                <td>{{ $data->total_amount }}</td>
+                                <td>
+                                    <a href="/vendor/po-invoice/{{ $data->id }}" target="_blank">
+                                        <button class="btn btn-warning">View</button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="vendor-action d-flex">
+                                        <a href="#"><button class="btn btn-info me-2">Edit</button></a>
+                                        <a href="/po-delete/{{ $data->id }}" onclick="return confirm('Are you sure, You want to delete this?')">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -57,7 +89,7 @@
 
 @section("scripts")
     <script>
-        let table = new DataTable('#purchase-order-table', {
+        let table = new DataTable('#purchase-order-details-table', {
             buttons: [
                 'copy', 'excel', 'pdf'
             ]

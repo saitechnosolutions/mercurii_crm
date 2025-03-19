@@ -132,16 +132,12 @@
                                 {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
                                     Customization</a> --}}
 
-                            <a href="{{ url('/users') }}" class="dropdown-item"
-                                data-key="t-calendar">Users</a>
-
-                                <a href="{{ url('/products') }}" class="dropdown-item"
-                                data-key="t-calendar">Products</a>
-                                <a href="{{ url('/customer') }}" class="dropdown-item"
-                                data-key="t-calendar">Customer</a>
-                                <a href="/terms" class="dropdown-item"
-                                data-key="t-calendar">Add Terms</a>
-                                <a href="{{ url('/product-categories') }}" class="dropdown-item" data-key="t-calendar">Product Categories</a>
+                                <a href="{{ url('/users') }}" class="dropdown-item" data-key="t-calendar">Users</a>
+                                <a href="{{ url('/product-categories') }}" class="dropdown-item"
+                                    data-key="t-calendar">Product Categories</a>
+                                <a href="{{ url('/products') }}" class="dropdown-item" data-key="t-calendar">Products</a>
+                                <a href="{{ url('/customer') }}" class="dropdown-item" data-key="t-calendar">Customer</a>
+                                <a href="/terms" class="dropdown-item" data-key="t-calendar">Terms and Conditions</a>
 
                             </div>
                         </li>
@@ -196,24 +192,12 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-                                {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
-                                    Customization</a> --}}
-
                                 <a href="/vieworf" class="dropdown-item" data-key="t-calendar">ORF Approval</a>
 
                             </div>
                         </li>
                     @endif
 
-
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="/enq-leadentry" id="topnav-dashboard"
-                            role="button">
-                            <i data-feather="home"></i><span data-key="t-dashboards">Quotation</span>
-                        </a>
-                    </li>
-                    @endif --}}
-                    <!-- vendor menu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button">
                             <i data-feather="grid"></i><span data-key="t-apps">Vendor Master</span>
@@ -221,13 +205,11 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnav-pages">
 
-                            {{-- <a href="{{ url('/setup/fields') }}" class="dropdown-item" data-key="t-calendar">Field
-                                Customization</a> --}}
-
                             <a href="{{ url('/vendors') }}" class="dropdown-item" data-key="t-calendar">Vendors</a>
-                            <a href="{{ url('/purchase-order') }}" class="dropdown-item" data-key="t-calendar">Purchase
+                            <a href="{{ url('/purchase-order-details') }}" class="dropdown-item"
+                                data-key="t-calendar">Purchase
                                 Order</a>
-                            <a href="{{ url('/purchase-entry') }}" class="dropdown-item" data-key="t-calendar">Products
+                            <a href="{{ url('/purchase-entry') }}" class="dropdown-item" data-key="t-calendar">Purchase
                                 Entry</a>
 
                         </div>
@@ -236,60 +218,63 @@
                 </ul>
             </div>
             @php
-    use App\Models\Term;
-    use App\Models\Orf;
-    use Illuminate\Support\Facades\Auth;
+                use App\Models\Term;
+                use App\Models\Orf;
+                use Illuminate\Support\Facades\Auth;
 
-    $userRole = Auth::user()->role; // Assuming the role field is 'role'
+                $userRole = Auth::user()->role; // Assuming the role field is 'role'
 
-    // Fetch counts based on role
-    $termApprovalCount = 0;
-    $orfApprovalCount = 0;
-    $orfcsApprovalCount = 0;
-    $totalNotifications = 0;
+                // Fetch counts based on role
+                $termApprovalCount = 0;
+                $orfApprovalCount = 0;
+                $orfcsApprovalCount = 0;
+                $totalNotifications = 0;
 
-    if ($userRole === 'Cs') {
-        $orfcsApprovalCount = Orf::where('cs_status', 0)->count();
-        $totalNotifications = $orfcsApprovalCount;
-    } else {
-        $termApprovalCount = Term::where('term_approve', 1)->count();
-        $orfApprovalCount = Orf::where('approval_status', 0)->count();
-        $totalNotifications = $termApprovalCount + $orfApprovalCount;
-    }
-@endphp
+                if ($userRole === 'Cs') {
+                    $orfcsApprovalCount = Orf::where('cs_status', 0)->count();
+                    $totalNotifications = $orfcsApprovalCount;
+                } else {
+                    $termApprovalCount = Term::where('term_approve', 1)->count();
+                    $orfApprovalCount = Orf::where('approval_status', 0)->count();
+                    $totalNotifications = $termApprovalCount + $orfApprovalCount;
+                }
+            @endphp
 
-@if ($totalNotifications > 0)
-    <div class="dropdown d-inline-block">
-        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard"
-           role="button" style="padding: 10px;" data-bs-toggle="dropdown">
-            <i data-feather="home"></i>
-            <span data-key="t-dashboards">
-                <i class="mdi mdi-bell"></i>
-                <span class="badge-count">{{ $totalNotifications }}</span>
-            </span>
-        </a>
+            @if ($totalNotifications > 0)
+                <div class="dropdown d-inline-block">
+                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button"
+                        style="padding: 10px;" data-bs-toggle="dropdown">
+                        <i data-feather="home"></i>
+                        <span data-key="t-dashboards">
+                            <i class="mdi mdi-bell"></i>
+                            <span class="badge-count">{{ $totalNotifications }}</span>
+                        </span>
+                    </a>
 
-        <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-            @if ($userRole === 'Cs' && $orfcsApprovalCount > 0)
-                <a href="/vieworf" class="dropdown-item" data-key="t-calendar">
-                    ORF CS Approval <span class="badge bg-danger">{{ $orfcsApprovalCount }}</span>
-                </a>
+                    <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                        @if ($userRole === 'Cs' && $orfcsApprovalCount > 0)
+                            <a href="/vieworf" class="dropdown-item" data-key="t-calendar">
+                                ORF CS Approval <span class="badge bg-danger">{{ $orfcsApprovalCount }}</span>
+                            </a>
+                        @endif
+
+                        @if ($termApprovalCount > 0)
+                            <a href="/terms" class="dropdown-item" data-key="t-calendar">
+                                Terms Approval <span class="badge bg-danger">{{ $termApprovalCount }}</span>
+                            </a>
+                        @endif
+
+                        @if ($orfApprovalCount > 0)
+                            <a href="/vieworf" class="dropdown-item" data-key="t-calendar">
+                                ORF Approval <span class="badge bg-danger">{{ $orfApprovalCount }}</span>
+                            </a>
+                        @endif
+                        <a href="/product-stocks" class="dropdown-item" data-key="t-calendar">
+                            Product Stock <span class="badge bg-danger">2</span>
+                        </a>
+                    </div>
+                </div>
             @endif
-
-            @if ($termApprovalCount > 0)
-                <a href="/terms" class="dropdown-item" data-key="t-calendar">
-                    Terms Approval <span class="badge bg-danger">{{ $termApprovalCount }}</span>
-                </a>
-            @endif
-
-            @if ($orfApprovalCount > 0)
-                <a href="/vieworf" class="dropdown-item" data-key="t-calendar">
-                    ORF Approval <span class="badge bg-danger">{{ $orfApprovalCount }}</span>
-                </a>
-            @endif
-        </div>
-    </div>
-@endif
 
 
             <div class="dropdown d-inline-block">
