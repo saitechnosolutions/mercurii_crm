@@ -246,6 +246,7 @@ body {
     height: 35px;
     border-radius: 5px;
 }
+
 .badge-count {
     position: absolute;
     top: 0px;
@@ -258,8 +259,9 @@ body {
     font-weight: bold;
     line-height: 1;
 }
+
 .topnav .navbar-nav .nav-link {
-padding: 10px !important;
+    padding: 10px !important;
 }
 
 table tbody td {
@@ -277,22 +279,29 @@ table tbody td {
     padding-top: 4px;
 }
 
-.select2-container--default .select2-selection--single{
+.select2-container--default .select2-selection--single {
     background-color: #f8f9fa !important;
 }
 
-.form-submit-btn{
+.form-submit-btn {
     width: 30%;
     height: 50px;
 }
 
-.po-remove-btn{
-    position: absolute !important;
+.po-remove-btn {
+    /* position: absolute !important;
     bottom: 5%;
     right: 0;
-    z-index: 1;
+    z-index: 1; */
     width: 30px !important;
-    font-size: 20px;
+    font-size: 25px;
     color: red;
     cursor: pointer;
+}
+
+.multi-field-btn {
+    display: flex;
+    align-items: center;
+    gap: 2%;
+    justify-content: end;
 }

@@ -26,9 +26,6 @@
             <form method="POST" action="/save-po" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-4 po-form-box position-relative">
-                    <div class="po-remove-btn">
-                        <i class="fas fa-trash"></i>
-                    </div>
                     <!-- product category drop -->
                     <div class="col-lg-6">
                         <div class="form-group mt-4">
@@ -153,34 +150,35 @@
 
                 </div>
 
-                <div class="text-end">
+                <div class="multi-field-btn">
                     <button type="button" class="btn btn-warning my-4" id="po_add_product_plus">Add Another
                         Product</button>
+                    <div class="po-remove-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
                 </div>
+
+
 
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="text-start">
                             <label for="exampleFormControlInput1" class="form-label">File Attachment</label>
-                            <input type="file" name="po_attachment" style="text-transform:uppercase;"
-                                class="form-control">
+                            <input type="file" name="po_attachment" style="text-transform:uppercase;" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div>
-                            <label for="exampleFormControlInput1" class="form-label">Terms and Condition</label>
-                            <select class="form-select terms_condition_id" name="terms_condition_id"
-                                required>
-                                <option value="">-- Choose Category --</option>
-                                @if ($status = App\Models\Term::get())
-                                    @foreach ($status as $data)
-                                        <option value="{{ $data->id }}">
-                                            {{ $data->content }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
+                        <label for="exampleFormControlInput1" class="form-label">Terms and Condition</label>
+                        <select class="form-select terms_condition_id" name="terms_condition_id" required>
+                            <option value="">-- Choose Category --</option>
+                            @if ($status = App\Models\Term::get())
+                                @foreach ($status as $data)
+                                    <option value="{{ $data->id }}">
+                                        {{ $data->content }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
                     </div>
                 </div>
 

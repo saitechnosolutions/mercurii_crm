@@ -26,9 +26,7 @@
             <form method="POST" action="/save-po">
                 @csrf
                 <div class="row mb-4 po-form-box position-relative">
-                    <div class="po-remove-btn">
-                        <i class="fas fa-trash"></i>
-                    </div>
+
                     <!-- product category drop -->
                     <div class="col-lg-6">
                         <div class="form-group mt-4">
@@ -150,8 +148,12 @@
 
                 </div>
 
-                <div class="text-end">
-                    <button type="button" class="btn btn-warning my-4" id="po_add_product_plus">Add Another Product</button>
+                <div class="multi-field-btn">
+                    <button type="button" class="btn btn-warning my-4" id="po_add_product_plus">Add Another
+                        Product</button>
+                    <div class="po-remove-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary m-auto d-block mt-4 mb-3 form-submit-btn">Create</button>
