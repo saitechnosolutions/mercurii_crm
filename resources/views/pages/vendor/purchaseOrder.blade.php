@@ -29,7 +29,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">All Vendors</div>
-            <div class="card-body">
+            <div class="card-body details-table">
                 <table id="purchase-order-details-table" class="display">
                     <thead>
                         <tr>

@@ -30,7 +30,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">Purchase Entry details</div>
-            <div class="card-body">
+            <div class="card-body details-table">
                 <table id="purchase-entry-table" class="display">
                     <thead>
                         <tr>
@@ -48,45 +48,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                17-03-2025
-                            </td>
-                            <td>
-                                Racking Special
-                            </td>
-                            <td>
-                                Selective Pallet Racking System
-                            </td>
-                            <td>
-                            TMTE Metal Tech Pvt Ltd
-                            </td>
-                            <td>
-                                <span data-bs-toggle="tooltip" data-bs-placement="top" title="₹60000">3</span>
-                            </td>
-                            <td>
-                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="₹40000">2</span>
-                            </td>
-                            <td>
-                            <span data-bs-toggle="tooltip" data-bs-placement="top" title="₹20000">1</span>
-                            </td>
-                            <td>
-                                ₹20000
-                            </td>
-                            <td>
-                                ₹70800
-                            </td>
-                            <td>
-                                <div class="vendor-action d-flex">
-                                    <button class="btn btn-info me-2"><i class="fa fa-edit" aria-hidden="true"></i>
-                                        Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+                        @php
+                            $peDetails = App\Models\PurchaseEntry::get();
+                        @endphp
+                        @foreach ($peDetails as $key => $data)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ date('d-m-Y',strtotime($data->poDetails->created_at)) }}</td>
+                                <td>{{ $data->categoryDetails->category_name }}</td>
+                                <td>{{ $data->productDetails->productname }}</td>
+                                <td>{{ $data->vendorDetails->company_name }}</td>
+                                <td>{{ $data->requested_qty }}</td>
+                                <td>{{ $data->received_qty }}</td>
+                                <td>{{ $data->pending_qty }}</td>
+                                <td>{{ $data->unit_price }}</td>
+                                <td>{{ $data->product_total_price }}</td>
+                                <td>
+                                    <div class="vendor-action d-flex">
+                                        <a href="#"><button class="btn btn-info me-2">Edit</button></a>
+                                        <a href="/po-delete/{{ $data->id }}"
+                                            onclick="return confirm('Are you sure, You want to delete this?')">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

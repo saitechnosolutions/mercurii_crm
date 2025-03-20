@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory;
+use App\Models\PurchaseEntry;
 use App\Models\PurchaseOrder;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ class VendorController extends Controller
         $isVendorInsert = $vendor->save();
         $lastInserted = Vendor::latest()->first();
 
-        
+
 
         // to find existing category to insert vendorid
 
@@ -83,13 +84,13 @@ class VendorController extends Controller
 
 
             } else {
-                
+
             }
         }
 
         if ($isVendorInsert) {
             return redirect()->route('pages.vendor.vendorList')->with('success', 'Vendor Details successfully!');
-        }else{
+        } else {
             return redirect()->route('pages.vendor.addVendors')->with('error', 'Something went wrong, Please try again');
         }
 
@@ -100,27 +101,28 @@ class VendorController extends Controller
 
     // delete po function
 
-    public function deletePO($poId){
-        $deletePo = PurchaseOrder::where('id',$poId)->delete();
-        if($deletePo){
-            return back()->with('delete-success','Purchase order deleted successfully');
-        }else{
-            return back()->with('delete-error','Something went wrong');
+    public function deletePO($poId)
+    {
+        $deletePo = PurchaseOrder::where('id', $poId)->delete();
+        if ($deletePo) {
+            return back()->with('delete-success', 'Purchase order deleted successfully');
+        } else {
+            return back()->with('delete-error', 'Something went wrong');
         }
     }
 
     public function viewPurchaseOrder()
     {
-        $poDetails = PurchaseOrder::with(['vendorDetails','productDetails','categoryDetails'])->orderBy('id','desc')->get();
-        
-        return view('pages.vendor.purchaseOrder',compact('poDetails'));
+        $poDetails = PurchaseOrder::with(['vendorDetails', 'productDetails', 'categoryDetails'])->orderBy('id', 'desc')->get();
+
+        return view('pages.vendor.purchaseOrder', compact('poDetails'));
     }
 
     public function viewPOInvoice($invoiceId)
     {
-        $poDetails = PurchaseOrder::with(['vendorDetails','productDetails','categoryDetails'])->where('id',$invoiceId)->first();
-        
-        return view('pages.vendor.po_invoice',compact('poDetails'));
+        $poDetails = PurchaseOrder::with(['vendorDetails', 'productDetails', 'categoryDetails'])->where('id', $invoiceId)->first();
+
+        return view('pages.vendor.po_invoice', compact('poDetails'));
     }
 
     public function savePo(Request $request)
@@ -174,7 +176,7 @@ class VendorController extends Controller
         $filename = time() . '_po_' . $fileAttach->getClientOriginalName();
         $fileAttach->move(public_path('uploads/'), $filename);
 
-        
+
 
 
         foreach ($catId as $key => $value) {
@@ -218,5 +220,70 @@ class VendorController extends Controller
         // PurchaseOrder::where('id',$lastInserted->id)->update(['files',$filename]);
 
         return redirect()->route('purchase-order-details-page')->with('success', 'Purchase order created successfully');
+    }
+
+    // get po details
+
+    public function getPoDetails(Request $request)
+    {
+        $poNo = $request->poNo;
+        $poDetails = PurchaseOrder::with(['categoryDetails','vendorDetails'])->where("po_no", $poNo)->get();
+        if ($poDetails) {
+            return response()->json(['status'=>'success','poDetails' => $poDetails], 200);
+        }else{
+            return response()->json(['status' => "error"], 500);
+        }
+    }
+
+    public function getPoProDetails(Request $request)
+    {
+        $poNo = $request->poNo;
+        $proId = $request->proId;
+        $poDetails = PurchaseOrder::where("po_no", $poNo)->where('product_id',$proId)->first();
+        if ($poDetails) {
+            return response()->json(['status'=>'success','poDetails' => $poDetails], 200);
+        }else{
+            return response()->json(['status' => "error"], 500);
+        }
+    }
+
+    public function savePE(Request $request)
+    {
+
+        $catId = $request->catId;
+        $proId = $request->proId;
+        $poNumber = $request->po_number;
+        $vendorId = $request->vendorId;
+        $pe_req_qty = $request->pe_req_qty;
+        $pe_received_qty = $request->pe_received_qty;
+        $pe_pending_qty = $request->pe_pending_qty;
+        $unit_price = $request->unit_price;
+        $gst = $request->gst;
+        $sub_total = $request->sub_total;
+        $product_total = $request->product_total;
+
+        foreach ($catId as $key => $value) {
+
+            PurchaseEntry::create([
+                "cat_id" => $value,
+                "po_no" => $poNumber[$key],
+                "product_id" => $proId[$key],
+                "vendor_id" => $vendorId[$key],
+                "requested_qty" => $pe_req_qty[$key],
+                "received_qty" => $pe_received_qty[$key],
+                "pending_qty" => $pe_pending_qty[$key],
+                "unit_price" => $unit_price[$key],
+                "product_total_price" => $product_total[$key],
+                "gst_amount" => $gst[$key],
+                "sub_total" => 0,
+                "total_amount" => 0,
+            ]);
+        }
+
+        // $lastInserted = PurchaseOrder::latest()->first();
+
+        // PurchaseOrder::where('id',$lastInserted->id)->update(['files',$filename]);
+
+        return redirect()->route('purchase-entry-details')->with('success', 'Purchase entry created successfully');
     }
 }

@@ -152,13 +152,16 @@ Route::get('/purchase-order-details', [VendorController::class, 'viewPurchaseOrd
 Route::view('/create-po','pages.vendor.addPurchaseOrder')->name('pages.vendor.create-po');
 Route::get('/po-delete/{poId}', [VendorController::class, 'deletePO']);
 Route::view('/add-purchase-entry','pages.vendor.addPurchaseEntry')->name('pages.vendor.add-purchase-entry');
-Route::view('/purchase-entry', "pages.vendor.purchaseEntry");
+Route::view('/purchase-entry', "pages.vendor.purchaseEntry")->name('purchase-entry-details');
 Route::get('/vendor/po-invoice/{invoiceId}', [VendorController::class, 'viewPOInvoice']);
 Route::view('/add-vendors','pages.vendor.addVendors')->name('pages.vendor.addVendors');
 Route::view('/edit-vendors','pages.vendor.editVendors')->name('pages.vendor.editVendors');
 Route::post('/saveVendors',[VendorController::class,'saveVendors'])->name('add-vendors');
 Route::post('/save-po',[VendorController::class,'savePo']);
 Route::view('/product-stocks', "pages.vendor.productStock");
+Route::post('/vendor/get-po-details', [VendorController::class, 'getPoDetails']);
+Route::post('/vendor/get-po-prodetails', [VendorController::class, 'getPoProDetails']);
+Route::post('/save-pe', [VendorController::class, 'savePE']);
 
 // terms&conditions
 Route::get('/terms', [TermController::class, 'viewterms'])->name('terms.view');

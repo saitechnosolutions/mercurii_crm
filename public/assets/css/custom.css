@@ -305,3 +305,7 @@ table tbody td {
     gap: 2%;
     justify-content: end;
 }
+
+.details-table table tr{
+    text-align: center !important;
+}
